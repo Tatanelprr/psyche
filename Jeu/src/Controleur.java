@@ -83,6 +83,57 @@ public class Controleur
 				v.setRessource((JetonRessource) r);
 			}
 		}
+			
+		this.villes = Ville.getVilles();
+		this.routes = Route.getRoutes();
+
+		for (Ville ville : villes)
+		{
+			int numVille = ville.getNumero();
+
+			if(numVille == 0)
+			{
+				ville.setImage("NvlRome");
+			}
+			if (numVille > 0 && numVille <= 5)
+			{
+
+				ville.setImage("Mine_Bleu");
+			} 
+			else if (numVille > 5 && numVille <= 10)
+			{
+
+				ville.setImage("Mine_Gris");
+			} 
+			else if (numVille > 10 && numVille <= 15)
+			{
+
+				ville.setImage("Mine_Jaune");
+			} 
+			else if (numVille > 15 && numVille <= 20)
+			{
+
+				ville.setImage("Mine_Marron");
+			} 
+			else if (numVille > 20 && numVille <= 25)
+			{
+
+				ville.setImage("Mine_Rouge");
+			} 
+			else if (numVille > 25 && numVille <= 30)
+			{
+
+				ville.setImage("Mine_Vert");
+			}
+        }
+
+		for ( Route route : routes)
+		{
+			route.setAbsDep(route.getVilleDep().getAbsCentre());
+			route.setOrdDep(route.getVilleDep().getOrdCentre());
+			route.setAbsArr(route.getVilleArr().getAbsCentre());
+			route.setOrdArr(route.getVilleArr().getOrdCentre());
+		}
 	}
 
 	public void affichagePlateauJ(PlateauJ plateau, FramePlateauJ framePlateau)
@@ -110,66 +161,9 @@ public class Controleur
 		this.villes = Ville.getVilles();
 		this.routes = Route.getRoutes();
 
-		for (Ville ville : villes)
-		{
-			int numVille = ville.getNumero();
-			int x = ville.getAbscisse();
-			int y = ville.getOrdonnee();
-			JetonRessource r = ville.getRessource();
-			String nom = ville.getNom();
-
-
-			if(numVille == 0)
-			{
-				ville.setImage("NvlRome");
-				this.panelPlateau.dessinerVille(g2, g, "NvlRome", x, y, null);
-			}
-			if (numVille > 0 && numVille <= 5)
-			{
-
-				ville.setImage("Mine_Bleu");
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Bleu", x, y, nom);
-			} 
-			else if (numVille > 5 && numVille <= 10)
-			{
-
-				ville.setImage("Mine_Gris");
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Gris", x, y, nom);
-			} 
-			else if (numVille > 10 && numVille <= 15)
-			{
-
-				ville.setImage("Mine_Jaune");
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Jaune", x, y, nom);
-			} 
-			else if (numVille > 15 && numVille <= 20)
-			{
-
-				ville.setImage("Mine_Marron");
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Marron", x, y, nom);
-			} 
-			else if (numVille > 20 && numVille <= 25)
-			{
-
-				ville.setImage("Mine_Rouge");
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Rouge", x, y, nom);
-			} 
-			else if (numVille > 25 && numVille <= 30)
-			{
-
-				ville.setImage("Mine_Vert");
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Vert", x, y, nom);
-			}
-			if (r != null)
-			{
-				String nomImage = r.toString().toLowerCase();
-				this.panelPlateau.dessinerRessources(g2, nomImage, x, y);
-			}
-        }
-
 		for ( Route route : routes)
 		{
-			int epaisseur = (int) (route.getVilleDep().getLargeur() + route.getVilleArr().getLargeur() / 4);
+			int epaisseur = 15;
 		
 			int departx = route.getAbsDep();
 			int departy = route.getOrdDep();
@@ -183,6 +177,50 @@ public class Controleur
 
 			this.panelPlateau.dessinerRoute(g, epaisseur, departx, departy, arriveex, arriveey, pasx, pasy, nbTroncons);
 		}
+
+		for (Ville ville : villes)
+		{
+			int numVille = ville.getNumero();
+			int x = ville.getAbscisse();
+			int y = ville.getOrdonnee();
+			JetonRessource r = ville.getRessource();
+			String nom = ville.getNom();
+
+
+			if(numVille == 0)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "NvlRome", x, y, null);
+			}
+			if (numVille > 0 && numVille <= 5)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "Mine_Bleu", x, y, nom);
+			} 
+			else if (numVille > 5 && numVille <= 10)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "Mine_Gris", x, y, nom);
+			} 
+			else if (numVille > 10 && numVille <= 15)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "Mine_Jaune", x, y, nom);
+			} 
+			else if (numVille > 15 && numVille <= 20)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "Mine_Marron", x, y, nom);
+			} 
+			else if (numVille > 20 && numVille <= 25)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "Mine_Rouge", x, y, nom);
+			} 
+			else if (numVille > 25 && numVille <= 30)
+			{
+				this.panelPlateau.dessinerVille(g2, g, "Mine_Vert", x, y, nom);
+			}
+			if (r != null)
+			{
+				String nomImage = r.toString().toLowerCase();
+				this.panelPlateau.dessinerRessources(g2, nomImage, x, y);
+			}
+        }
 	}
 
 	private void importerDonnees()

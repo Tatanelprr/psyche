@@ -35,10 +35,6 @@ public class Route
 		this.nbTroncons = nbTroncons;
         this.villeDep = villeDep;
         this.villeArr = villeArr;
-        this.absDep = villeDep.getAbsCentre();
-        this.ordDep = villeDep.getOrdCentre();
-        this.absArr = villeArr.getAbsCentre();
-        this.ordArr = villeArr.getOrdCentre();
 
         double angle = Math.atan2(ordArr - ordDep, absArr - absDep);
         int distance = 90;
@@ -80,6 +76,14 @@ public class Route
 	public int getAbsArr(){ return this.absArr; }
 
 	public int getOrdArr(){ return this.ordArr; }
+
+	public void setAbsDep(int entier){ this.absDep = entier; }
+
+	public void setOrdDep(int entier){ this.ordDep = entier; }
+
+	public void setAbsArr(int entier){ this.absArr = entier; }
+
+	public void setOrdArr(int entier){ this.ordArr = entier; }
 	
 
 	public String toString()
