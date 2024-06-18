@@ -139,12 +139,13 @@ public class Controleur
 			}
 
 
-			int h = ville.getHauteur();
-			int l = ville.getLargeur();
+			int h = (int) (ville.getHauteur() * tailleEcran.height / 800);
+			int l = (int) (ville.getLargeur() * tailleEcran.width * 0.5 / 1000);
 			int x = (int) (ville.getAbscisse() * tailleEcran.width * 0.5 / 1000);
-			int y = ville.getOrdonnee();
+			int y = (int) (ville.getOrdonnee() * tailleEcran.height / 800);
 
 			this.zonesCliquables.add(new ZoneCliquable(x, y, l, h, ville));
+
         }
 
 		for ( Route route : routes)
