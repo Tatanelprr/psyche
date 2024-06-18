@@ -52,7 +52,7 @@ public class PanelPlateau extends JPanel
 		this.ctrl.dessinerVillesEtRoutes(g, g2);
     }
 
-    public void dessinerVille(Graphics2D g2, Graphics g, Image image, int x, int y, String num)
+    public void dessinerVille(Graphics2D g2, Graphics g, Image image, int x, int y, String num, String nom)
 	{
 		int lPanel = getWidth();
         int hPanel = getHeight();
@@ -60,33 +60,31 @@ public class PanelPlateau extends JPanel
 		int x2 = x * lPanel / 1000;
 		int y2 = y * hPanel / 800;
 
+		int x3, y3;
+
 		int lImage = (int) (lPanel * 0.04);
-		int hImage = lImage * image.getHeight(getFocusCycleRootAncestor()) / image.getWidth(getFocusCycleRootAncestor());
+		int hImage = lImage * image.getHeight(null) / image.getWidth(null);
 
 		g2.drawImage(image, x2, y2, lImage, hImage, this);
 		if (num != null)
 		{
-			g2.drawString(num, x2 + 15, y2 + 23);
+			x3 = (int) (x2 + lImage / 2.5);
+			y3 = y2 + hImage / 3;
+			g2.drawString(num, x3, y3);
 		}
-	}
+		if (nom != null)
+		{
+			Image imageR = getToolkit().getImage("images/ressources/" + nom + ".png");
 
-	public void dessinerRessources(Graphics g2, String nom, int x, int y)
-	{
-		Image image = getToolkit().getImage("images/ressources/" + nom + ".png");
-		
-		int lPanel = getWidth();
-        int hPanel = getHeight();
+			lImage = (int) (lPanel * 0.03);		
 
-		int x2 = (x * lPanel / 1000) + 5;
-		int y2 = (y * hPanel / 800) + 35;
+			g2.setColor(Color.BLACK);
 
-		int lImage = (int) (lPanel * 0.03);
-		int hImage = lImage * image.getHeight(getFocusCycleRootAncestor()) / image.getWidth(getFocusCycleRootAncestor());
+			x3 = x2 + lImage / 4;
+			y3 = y2 + hImage / 2;
 
-
-		g2.setColor(Color.BLACK);
-
-		g2.drawImage(image, x2, y2, lImage, hImage, this);
+			g2.drawImage(imageR, x3, y3, lImage, lImage, this);
+		}
 	}
 
 	public void dessinerRoute(Graphics g, int epaisseur, int departx, int departy, int arriveex, int arriveey, int nbTroncons, int numeroJoueur) 

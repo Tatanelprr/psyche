@@ -142,7 +142,7 @@ public class Controleur
 			int h = ville.getHauteur();
 			int l = ville.getLargeur();
 			int x = (int) (ville.getAbscisse() * tailleEcran.width * 0.5 / 1000);
-			int y = (int) ville.getOrdonnee();
+			int y = ville.getOrdonnee();
 
 			this.zonesCliquables.add(new ZoneCliquable(x, y, l, h, ville));
         }
@@ -213,17 +213,12 @@ public class Controleur
 
 			if (ville.getNumero() != 0)
 			{
-				this.panelPlateau.dessinerVille(g2, g, image, x, y, nom);
+				String nomImage = r.toString().toLowerCase();
+				this.panelPlateau.dessinerVille(g2, g, image, x, y, nom, nomImage);
 			}
 			else
 			{
-				this.panelPlateau.dessinerVille(g2, g, image, x, y, null);
-			}
-
-			if (r != null)
-			{
-				String nomImage = r.toString().toLowerCase();
-				this.panelPlateau.dessinerRessources(g2, nomImage, x, y);
+				this.panelPlateau.dessinerVille(g2, g, image, x, y, null, null);
 			}
         }
 	}
