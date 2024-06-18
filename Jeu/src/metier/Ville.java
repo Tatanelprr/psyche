@@ -19,6 +19,7 @@ public class Ville
 	private int    x, y;
 	private int    largeur, hauteur;
 	private Image  image ;
+	private Joueur joueur = null;
 
 	private JetonRessource ressource;
 
@@ -93,21 +94,30 @@ public class Ville
 	public void setNom(String nom) { this.nom = nom;}
 
 	public void setImage(String nom, Dimension tailleEcran)
-	{
-		ImageIcon imageIcon = new ImageIcon("images/opaque/" + nom + ".png");
+    {
+        ImageIcon imageIcon;
+        if(this.joueur != null)
+        {
+            imageIcon = new ImageIcon("images/transparant/" + nom + ".png");
+        }
+        else
+        {
+            imageIcon = new ImageIcon("images/opaque/" + nom + ".png");
+        }
 
-		int hEcran = tailleEcran.height;
-		int lEcran = tailleEcran.width;
+        int hEcran = tailleEcran.height;
+        int lEcran = tailleEcran.width;
 
-		Image image = imageIcon.getImage();
-		
-		this.largeur = (int) (lEcran * 0.5 * 0.04);
-		this.hauteur = this.largeur * image.getHeight(null) / image.getWidth(null);
+        Image image = imageIcon.getImage();
+        
+        this.largeur = (int) (lEcran * 0.5 * 0.04);
+        this.hauteur = this.largeur * image.getHeight(null) / image.getWidth(null);
 
-		this.absCentre = this.x + this.largeur / 2;
-		this.ordCentre = this.y + this.hauteur / 2;
-		this.image = image;
-	}
+        this.absCentre = this.x + this.largeur / 2;
+        this.ordCentre = this.y + this.hauteur / 2;
+
+        this.image = image;
+    }
 
 	public JetonRessource getRessource() { return this.ressource; }
 

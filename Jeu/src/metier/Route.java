@@ -14,6 +14,7 @@ public class Route
 	private int ordArr;
 	private Ville villeDep  ;
 	private Ville villeArr  ;
+	private Joueur joueur = null;
 
 	public static Route ajouterRoute(int nbTroncons, Ville villeDep,  Ville villeArr)
 	{
@@ -81,6 +82,20 @@ public class Route
 	{
 		return "Route :" + this.villeDep.getNumero() + ":" + this.villeArr.getNumero() + ":" + this.nbTroncons;
 	}
+
+	public Joueur getJoueur()
+    {
+        return this.joueur;
+    }
+
+    public void possession(Joueur joueur)
+    {
+        if (this.joueur != null)
+        {
+            joueur.setNbJetPoss(this.getNbTroncons());
+            this.joueur = joueur;
+        }
+    }
 	
 
 	public static List<Route> getRoutes() { return routes; }

@@ -5,6 +5,7 @@ public class Joueur
     private static int increment = 1;
     private int numero;
     private String nom;
+    private int nbJetPoss = 25;
 
     public Joueur(String nom) {
         this.numero = increment++;
@@ -17,5 +18,15 @@ public class Joueur
 
     public String getNom() {
         return this.nom;
+    }
+
+    public int getNbJetPoss()
+    {
+        return this.nbJetPoss;
+    }
+
+    public void setNbJetPoss(int nb)
+    {
+        this.nbJetPoss -= nb;
     }
 }

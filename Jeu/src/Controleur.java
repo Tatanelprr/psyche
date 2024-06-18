@@ -8,6 +8,7 @@ import Jeu.metier.PlateauJ;
 import Jeu.metier.Pioche;
 import Jeu.metier.Plateau;
 import Jeu.metier.Ville;
+import Jeu.metier.ZoneCliquable;
 import Jeu.metier.Route;
 
 import Jeu.ihm.FramePlateauJ;
@@ -27,6 +28,9 @@ import java.io.BufferedReader;
 public class Controleur
 {
 	// metier
+	private int hauteurPlateau;
+	private int largeurPlateau;
+
 	private Joueur joueur1 = new Joueur("Charles");
 	private Joueur joueur2 = new Joueur("Solène");
 	private Plateau plateau;
@@ -35,6 +39,7 @@ public class Controleur
 	private Pioche pioche = new Pioche();
 	private static List<Ville> villes = new ArrayList<>();
 	private static List<Route> routes = new ArrayList<>();
+	private List<ZoneCliquable> zonesCliquables = new ArrayList<>();
 
 	// ihm
 	private int[] abscissesRessources = { 44, 81, 118, 155, 192, 229, 266, 303 };
@@ -70,6 +75,12 @@ public class Controleur
 
 		this.affichagePlateauJ(this.plateauJoueur1, this.framePlateauJ1);
 		this.affichagePlateauJ(this.plateauJoueur2, this.framePlateauJ2);
+	}
+
+	public void setDimension(int hauteur, int largeur)
+	{
+		this.hauteurPlateau = hauteur;
+		this.largeurPlateau = largeur;
 	}
 
 	public void remplirPlateau(Plateau plateau)
@@ -126,6 +137,14 @@ public class Controleur
 
 				ville.setImage("Mine_Vert", this.tailleEcran);
 			}
+
+
+			int h = ville.getHauteur();
+			int l = ville.getLargeur();
+			int x = (int) (ville.getAbscisse() * tailleEcran.width * 0.5 / 1000);
+			int y = (int) ville.getOrdonnee();
+
+			this.zonesCliquables.add(new ZoneCliquable(x, y, l, h, ville));
         }
 
 		for ( Route route : routes)
@@ -174,52 +193,50 @@ public class Controleur
 
 			int nbTroncons = route.getNbTroncons();
 
-			this.panelPlateau.dessinerRoute(g, epaisseur, departx, departy, arriveex, arriveey, pasx, pasy, nbTroncons);
+			int numJoueur = 0;
+			if (route.getJoueur() != null)
+			{
+				numJoueur = route.getJoueur().getNumero();
+			}
+
+			this.panelPlateau.dessinerRoute(g, epaisseur, departx, departy, arriveex, arriveey, nbTroncons, numJoueur);
 		}
 
 		for (Ville ville : villes)
 		{
 			int numVille = ville.getNumero();
+			String nom = ville.getNom();
 			int x = ville.getAbscisse();
 			int y = ville.getOrdonnee();
 			JetonRessource r = ville.getRessource();
-			String nom = ville.getNom();
+			Image image = ville.getImage();
 
+			if (ville.getNumero() != 0)
+			{
+				this.panelPlateau.dessinerVille(g2, g, image, x, y, nom);
+			}
+			else
+			{
+				this.panelPlateau.dessinerVille(g2, g, image, x, y, null);
+			}
 
-			if(numVille == 0)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "NvlRome", x, y, null);
-			}
-			if (numVille > 0 && numVille <= 5)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Bleu", x, y, nom);
-			} 
-			else if (numVille > 5 && numVille <= 10)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Gris", x, y, nom);
-			} 
-			else if (numVille > 10 && numVille <= 15)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Jaune", x, y, nom);
-			} 
-			else if (numVille > 15 && numVille <= 20)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Marron", x, y, nom);
-			} 
-			else if (numVille > 20 && numVille <= 25)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Rouge", x, y, nom);
-			} 
-			else if (numVille > 25 && numVille <= 30)
-			{
-				this.panelPlateau.dessinerVille(g2, g, "Mine_Vert", x, y, nom);
-			}
 			if (r != null)
 			{
 				String nomImage = r.toString().toLowerCase();
 				this.panelPlateau.dessinerRessources(g2, nomImage, x, y);
 			}
         }
+	}
+
+	public void deplacement(int x, int y)
+	{
+		for (ZoneCliquable zone : zonesCliquables)
+		{
+			if (zone.contains(x, y))
+			{
+				System.out.println(zone.getVilleAssociee().toString());
+			}
+		}
 	}
 
 	private void importerDonnees()
