@@ -1,0 +1,81 @@
+Ville 0 :0:588,341
+Ville 1 :2:585,449
+Ville 2 :3:610,730
+Ville 3 :4:311,730
+Ville 4 :6:409,603
+Ville 5 :8:580,586
+Ville 6 :0:814,256
+Ville 7 :1:721,453
+Ville 8 :2:899,620
+Ville 9 :3:788,540
+Ville 10 :4:855,348
+Ville 11 :1:690,289
+Ville 12 :5:769,131
+Ville 13 :2:869,40
+Ville 14 :3:653,185
+Ville 15 :4:631,38
+Ville 16 :1:232,631
+Ville 17 :2:21,730
+Ville 18 :3:201,536
+Ville 19 :4:22,385
+Ville 20 :5:92,501
+Ville 21 :1:350,420
+Ville 22 :2:381,325
+Ville 23 :3:227,379
+Ville 24 :4:16,14
+Ville 25 :5:25,239
+Ville 26 :2:361,158
+Ville 27 :3:503,210
+Ville 28 :4:392,23
+Ville 29 :6:264,58
+Ville 30 :8:176,93
+Route :0:1:1
+Route :0:16:2
+Route :16:17:2
+Route :19:17:2
+Route :19:20:1
+Route :20:18:1
+Route :18:23:1
+Route :23:25:2
+Route :25:24:1
+Route :21:24:2
+Route :0:21:1
+Route :1:4:1
+Route :1:5:1
+Route :2:5:1
+Route :2:3:1
+Route :3:4:1
+Route :0:4:1
+Route :0:11:1
+Route :11:14:1
+Route :14:12:1
+Route :12:13:2
+Route :15:13:1
+Route :15:28:2
+Route :28:27:1
+Route :27:29:1
+Route :26:29:1
+Route :26:30:1
+Route :22:26:1
+Route :21:30:2
+Route :1:7:1
+Route :7:6:1
+Route :6:9:1
+Route :9:10:1
+Route :8:10:1
+Route :8:13:2
+Route :6:11:1
+Route :3:17:2
+Route :0:22:1
+Route :18:16:1
+Route :6:13:2
+Route :14:27:1
+Route :17:20:1
+Route :4:17:2
+Route :5:9:2
+Route :2:8:2
+Route :24:28:2
+Route :22:27:1
+Route :16:21:1
+Route :20:25:1
+Route :4:16:1
