@@ -1,11 +1,15 @@
 package Jeu.metier;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Joueur
 {
     private static int increment = 1;
     private int numero;
     private String nom;
     private int nbJetPoss = 25;
+    private List<JetonRessource> ressources = new ArrayList<>();
 
     public Joueur(String nom) {
         this.numero = increment++;
@@ -28,5 +32,10 @@ public class Joueur
     public void setNbJetPoss(int nb)
     {
         this.nbJetPoss -= nb;
+    }
+
+    public void setRessource(JetonRessource r)
+    {
+        this.ressources.add(r);
     }
 }

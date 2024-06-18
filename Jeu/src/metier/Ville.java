@@ -56,11 +56,6 @@ public class Ville
 	{
 		return "Ville " + this.numero + " :" + this.nom + ":" + this.x + "," + this.y;
 	}
-	
-	public void setRessource(JetonRessource ressource)
-	{
-		this.ressource = ressource;
-	}
 
 	public void ajouterRoute(Route route)
 	{
@@ -76,6 +71,14 @@ public class Ville
 	public int getOrdonnee() { return this.y; }
 
 	public String getNom() { return this.nom; }
+	
+	public int getLargeur() { return this.largeur; }
+
+	public JetonRessource getRessource() { return this.ressource; }
+	
+	public int getHauteur() { return this.hauteur; }
+
+	public Joueur getJoueur() { return this.joueur; }
 
 	public int getNumero() { return this.numero; }
 
@@ -86,10 +89,10 @@ public class Ville
     public void setAbscisse(int x) { this.x = x; }
 
     public void setOrdonnee(int y) { this.y = y; }
-
-	public int getLargeur() { return this.largeur; }
 	
-	public int getHauteur() { return this.hauteur; }
+	public void setRessource(JetonRessource ressource) { this.ressource = ressource; }
+
+	public void setJoueur(Joueur j)	{ this.joueur = j; }
 
 	public void setNom(String nom) { this.nom = nom;}
 
@@ -98,7 +101,7 @@ public class Ville
         ImageIcon imageIcon;
         if(this.joueur != null)
         {
-            imageIcon = new ImageIcon("images/transparant/" + nom + ".png");
+            imageIcon = new ImageIcon("images/transparent/" + nom + ".png");
         }
         else
         {
@@ -119,8 +122,6 @@ public class Ville
         this.image = image;
     }
 
-	public JetonRessource getRessource() { return this.ressource; }
-
 	public static Ville trouverVilleParNum(int num)
 	{
         for (Ville ville : villes)
@@ -132,4 +133,32 @@ public class Ville
         }
         return null; 
     }
+
+	public void possession(Joueur j)
+	{
+		if (this.joueur == null)
+		{
+			this.joueur = j;
+
+		}
+	}
+
+	public void enleverRessource()
+	{
+		this.ressource = null;
+	}
+
+	public boolean estAdjacente(Ville autreVille)
+	{
+		for (Route route : this.routesAdj)
+		{
+			if ((route.getVilleDep().equals(this) && route.getVilleArr().equals(autreVille)) ||
+				(route.getVilleDep().equals(autreVille) && route.getVilleArr().equals(this)))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

@@ -90,12 +90,25 @@ public class Route
 
     public void possession(Joueur joueur)
     {
-        if (this.joueur != null)
+        if (this.joueur == null)
         {
             joueur.setNbJetPoss(this.getNbTroncons());
             this.joueur = joueur;
         }
     }
+
+	public static Route getRouteAvecVilles(Ville ville1, Ville ville2)
+	{
+		for (Route route : routes)
+		{
+			if ((route.getVilleDep().equals(ville1) && route.getVilleArr().equals(ville2)) || (route.getVilleDep().equals(ville2) && route.getVilleArr().equals(ville1)))
+			{
+				return route;
+			}
+		}
+		return null;
+	}
+	
 	
 
 	public static List<Route> getRoutes() { return routes; }

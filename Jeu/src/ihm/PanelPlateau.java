@@ -31,7 +31,13 @@ public class PanelPlateau extends JPanel
 				int x = e.getX();
 				int y = e.getY();
 
-				PanelPlateau.this.ctrl.deplacement(x, y);
+				boolean bool = PanelPlateau.this.ctrl.selectionVilles(x, y);
+				
+				if (bool)
+				{
+					PanelPlateau.this.ctrl.deplacement();
+					PanelPlateau.this.repaint();
+				}
 			}
 		});
 	}
@@ -112,13 +118,13 @@ public class PanelPlateau extends JPanel
 
 		if (numeroJoueur != 0)
         {
-            Image image = getToolkit().getImage("images/pion_joueur_" + numeroJoueur);
+            Image image = getToolkit().getImage("images/pion_joueur_" + numeroJoueur + ".png");
             int lImage = (int) (lPanel * 0.04);
-            int hImage = lImage * image.getHeight(getFocusCycleRootAncestor()) / image.getWidth(getFocusCycleRootAncestor());
+            int hImage = lImage * image.getHeight(null) / image.getWidth(null);
             if (nbTroncons == 2)
             {
-                g2d.drawImage(image, (departx2 + ((departx2 + arriveex2) / 2 - (int) (epaisseur / 2))) / 2 , (departy2 + ((departy2 + arriveey2) / 2 - (int) (epaisseur / 2))) / 2, lImage, hImage, this);
-                g2d.drawImage(image, (arriveex2 + ((departx2 + arriveex2) / 2 - (int) (epaisseur / 2))) / 2 , (arriveey2 + ((departy2 + arriveey2) / 2 - (int) (epaisseur / 2))) / 2, lImage, hImage, this);
+                g2d.drawImage(image, (departx2 + ((departx2 + arriveex2) / 2 - (int) (epaisseur / 2))) / 2 , (departy2 + ((departy2 + arriveey2) / 2 - (int) (epaisseur / 2))) / 2, epaisseur, epaisseur, this);
+                g2d.drawImage(image, (arriveex2 + ((departx2 + arriveex2) / 2 - (int) (epaisseur / 2))) / 2 , (arriveey2 + ((departy2 + arriveey2) / 2 - (int) (epaisseur / 2))) / 2, epaisseur, epaisseur, this);
             }
 			else
 			{

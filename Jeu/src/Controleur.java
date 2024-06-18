@@ -33,9 +33,12 @@ public class Controleur
 
 	private Joueur joueur1 = new Joueur("Charles");
 	private Joueur joueur2 = new Joueur("Solène");
+	private Joueur nvlRome = new Joueur("Romain");
+	private Joueur joueurActif;
 	private Plateau plateau;
 	private PlateauJ plateauJoueur1;
 	private PlateauJ plateauJoueur2;
+	private Ville ville1, ville2;
 	private Pioche pioche = new Pioche();
 	private static List<Ville> villes = new ArrayList<>();
 	private static List<Route> routes = new ArrayList<>();
@@ -72,8 +75,8 @@ public class Controleur
 
 		this.framePlateauJ2 = new FramePlateauJ(joueur2.getNumero(), this.tailleEcran);
 
-		this.affichagePlateauJ(this.plateauJoueur1, this.framePlateauJ1);
-		this.affichagePlateauJ(this.plateauJoueur2, this.framePlateauJ2);
+		Ville.trouverVilleParNum(0).possession(this.nvlRome);
+		this.joueurActif = this.joueur1;
 	}
 
 	public void setDimension(int hauteur, int largeur)
@@ -98,6 +101,17 @@ public class Controleur
 		this.villes = Ville.getVilles();
 		this.routes = Route.getRoutes();
 
+		this.remplirVille();
+
+		for ( Route route : routes)
+		{
+			route.setDep(route.getVilleDep().getAbsCentre(), route.getVilleDep().getOrdCentre());
+			route.setArr(route.getVilleArr().getAbsCentre(), route.getVilleArr().getOrdCentre());
+		}
+	}
+
+	public void remplirVille()
+	{
 		for (Ville ville : villes)
 		{
 			int numVille = ville.getNumero();
@@ -150,32 +164,6 @@ public class Controleur
 			this.zonesCliquables.add(new ZoneCliquable(x, y, lImage, hImage, ville));
 
         }
-
-		for ( Route route : routes)
-		{
-			route.setDep(route.getVilleDep().getAbsCentre(), route.getVilleDep().getOrdCentre());
-			route.setArr(route.getVilleArr().getAbsCentre(), route.getVilleArr().getOrdCentre());
-		}
-	}
-
-	public void affichagePlateauJ(PlateauJ plateau, FramePlateauJ framePlateau)
-	{
-		int abscisse = 0;
-
-		for (List<JetonRessource> colonne : plateau.getPlateau())
-		{
-			for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++)
-			{
-				JetonRessource jeton = colonne.get(ordonnee);
-				framePlateau.creationLabelJeton(new Jeton(jeton).toString(), this.abscissesRessources[abscisse], this.ordonneesRessources[ordonnee]);
-			}
-			abscisse += 1;
-		}
-
-		for (int i = 0; i < plateau.getNbMonnaie(); i++)
-		{
-			framePlateau.creationLabelJeton(new Jeton(JetonRessource.MONNAIE).toString(), 44 + i * 37, 225);
-		}
 	}
 
 	public void dessinerVillesEtRoutes( Graphics g, Graphics2D g2)
@@ -211,7 +199,7 @@ public class Controleur
 			JetonRessource r = ville.getRessource();
 			Image image = ville.getImage();
 
-			if (ville.getNumero() != 0)
+			if (ville.getNumero() != 0 && r != null)
 			{
 				String nomImage = r.toString().toLowerCase();
 				this.panelPlateau.dessinerVille(g2, g, image, x, y, nom, nomImage);
@@ -223,14 +211,61 @@ public class Controleur
         }
 	}
 
-	public void deplacement(int x, int y)
+	public boolean selectionVilles(int x, int y)
 	{
 		for (ZoneCliquable zone : zonesCliquables)
 		{
 			if (zone.contains(x, y))
 			{
-				System.out.println(zone.getVilleAssociee().toString());
+				if (this.ville1 == null)
+				{
+					this.ville1 = zone.getVilleAssociee();
+					return false;
+				}
+				else
+				{
+					this.ville2 = zone.getVilleAssociee();
+					return true;
+				}
 			}
+		}
+		return false;
+	}
+
+	public void deplacement()
+	{
+		if (this.ville1.estAdjacente(this.ville2) && (this.ville1.getJoueur() != null ^ this.ville2.getJoueur() != null) && this.ville1 != this.ville2)
+		{
+			Route.getRouteAvecVilles(this.ville1, this.ville2).possession(this.joueurActif);
+			if (this.ville1.getJoueur() == null)
+			{
+				this.ville1.setJoueur(this.joueurActif);
+				this.joueurActif.setRessource(this.ville1.getRessource());
+				this.ville1.enleverRessource();
+			}
+			else
+			{
+				this.ville2.setJoueur(this.joueurActif);
+				this.joueurActif.setRessource(this.ville2.getRessource());
+				this.ville2.enleverRessource();
+			}
+
+			this.remplirVille();
+			this.changeJoueur();
+			this.ville1 = null;
+			this.ville2 = null;
+		}
+	}
+
+	public void changeJoueur()
+	{
+		if (this.joueurActif == this.joueur1)
+		{
+			this.joueurActif = this.joueur2;
+		}
+		else
+		{
+			this.joueurActif = this.joueur1;
 		}
 	}
 
@@ -279,7 +314,9 @@ public class Controleur
 							{
 								int nbTroncons = Integer.parseInt(routeData[3].trim());
 			
-								Route.ajouterRoute(nbTroncons, villeDep, villeArr);
+								Route r = Route.ajouterRoute(nbTroncons, villeDep, villeArr);
+								villeDep.ajouterRoute(r);
+								villeArr.ajouterRoute(r);
 							}
 						
 						}
