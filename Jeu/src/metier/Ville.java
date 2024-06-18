@@ -1,5 +1,6 @@
 package Jeu.metier;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,16 +92,17 @@ public class Ville
 
 	public void setNom(String nom) { this.nom = nom;}
 
-	public void setImage(String nom)
+	public void setImage(String nom, Dimension tailleEcran)
 	{
 		ImageIcon imageIcon = new ImageIcon("images/opaque/" + nom + ".png");
 
+		int hEcran = tailleEcran.height;
+		int lEcran = tailleEcran.width;
+
 		Image image = imageIcon.getImage();
 		
-		this.largeur = image.getWidth(null);
-		this.hauteur = image.getHeight(null);
-
-		image.getHeight(null);
+		this.largeur = (int) (lEcran * 0.5 * 0.04);
+		this.hauteur = this.largeur * image.getHeight(null) / image.getWidth(null);
 
 		this.absCentre = this.x + this.largeur / 2;
 		this.ordCentre = this.y + this.hauteur / 2;

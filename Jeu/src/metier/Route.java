@@ -37,7 +37,7 @@ public class Route
         this.villeArr = villeArr;
 
         double angle = Math.atan2(ordArr - ordDep, absArr - absDep);
-        int distance = 90;
+        int distance = 120;
 
         int nvDepartx = (int) (absDep + distance * Math.cos(angle));
         int nvDeparty = (int) (ordDep + distance * Math.sin(angle));
@@ -75,16 +75,7 @@ public class Route
 
 	public int getAbsArr(){ return this.absArr; }
 
-	public int getOrdArr(){ return this.ordArr; }
-
-	public void setAbsDep(int entier){ this.absDep = entier; }
-
-	public void setOrdDep(int entier){ this.ordDep = entier; }
-
-	public void setAbsArr(int entier){ this.absArr = entier; }
-
-	public void setOrdArr(int entier){ this.ordArr = entier; }
-	
+	public int getOrdArr(){ return this.ordArr; }	
 
 	public String toString()
 	{

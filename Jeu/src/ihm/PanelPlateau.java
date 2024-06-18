@@ -65,21 +65,28 @@ public class PanelPlateau extends JPanel
 		int lImage = (int) (this.lPanel * 0.03);
 		int hImage = lImage * image.getHeight(getFocusCycleRootAncestor()) / image.getWidth(getFocusCycleRootAncestor());
 
+
+		g2.setColor(Color.BLACK);
+
 		g2.drawImage(image, x2, y2, lImage, hImage, this);
 	}
 
 	public void dessinerRoute(Graphics g, int epaisseur, int departx, int departy, int arriveex, int arriveey, int pasx, int pasy, int nbTroncons) {
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.GRAY);
+		g2d.setColor(Color.DARK_GRAY);
 	
 		g2d.setStroke(new BasicStroke((float) (epaisseur / 2.5)));
 	
-		g2d.drawLine(departx, departy, arriveex, arriveey);
-		for (int i = 0; i < nbTroncons; i++) {
-			g2d.fillOval(departx - (int) (epaisseur / 2), departy - (int) (epaisseur / 2), epaisseur, epaisseur);
-			departx += pasx;
-			departy += pasy;
+		int departx2 = departx * this.lPanel / 1000;
+		int departy2 = departy * this.hPanel / 800;
+
+		int arriveex2 = arriveex * this.lPanel / 1000;
+		int arriveey2 = arriveey * this.hPanel / 800;
+
+		g2d.drawLine(departx2, departy2, arriveex2, arriveey2);
+		if (nbTroncons == 2)
+		{
+			g2d.fillOval((departx2 + arriveex2) / 2 - (int) (epaisseur / 2), (departy2 + arriveey2) / 2 - (int) (epaisseur / 2), epaisseur, epaisseur);
 		}
-		g2d.fillOval(departx - (int) (epaisseur / 2), departy - (int) (epaisseur / 2), epaisseur, epaisseur);
 	}
 }

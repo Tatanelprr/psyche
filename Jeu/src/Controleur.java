@@ -50,6 +50,8 @@ public class Controleur
 	{
 		this.importerDonnees();
 
+		this.tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+
 		// metier
 		this.plateau        = new Plateau(joueur1, joueur2);
 		this.plateauJoueur1 = new PlateauJ(this.joueur1);
@@ -58,7 +60,6 @@ public class Controleur
 		this.remplirPlateau(this.plateau);
 
 		// ihm
-		this.tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		this.panelPlateau   = new PanelPlateau(this, this.tailleEcran);
 		this.framePlateau   = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
@@ -93,46 +94,44 @@ public class Controleur
 
 			if(numVille == 0)
 			{
-				ville.setImage("NvlRome");
+				ville.setImage("NvlRome", this.tailleEcran);
 			}
 			if (numVille > 0 && numVille <= 5)
 			{
 
-				ville.setImage("Mine_Bleu");
+				ville.setImage("Mine_Bleu", this.tailleEcran);
 			} 
 			else if (numVille > 5 && numVille <= 10)
 			{
 
-				ville.setImage("Mine_Gris");
+				ville.setImage("Mine_Gris", this.tailleEcran);
 			} 
 			else if (numVille > 10 && numVille <= 15)
 			{
 
-				ville.setImage("Mine_Jaune");
+				ville.setImage("Mine_Jaune", this.tailleEcran);
 			} 
 			else if (numVille > 15 && numVille <= 20)
 			{
 
-				ville.setImage("Mine_Marron");
+				ville.setImage("Mine_Marron", this.tailleEcran);
 			} 
 			else if (numVille > 20 && numVille <= 25)
 			{
 
-				ville.setImage("Mine_Rouge");
+				ville.setImage("Mine_Rouge", this.tailleEcran);
 			} 
 			else if (numVille > 25 && numVille <= 30)
 			{
 
-				ville.setImage("Mine_Vert");
+				ville.setImage("Mine_Vert", this.tailleEcran);
 			}
         }
 
 		for ( Route route : routes)
 		{
-			route.setAbsDep(route.getVilleDep().getAbsCentre());
-			route.setOrdDep(route.getVilleDep().getOrdCentre());
-			route.setAbsArr(route.getVilleArr().getAbsCentre());
-			route.setOrdArr(route.getVilleArr().getOrdCentre());
+			route.setDep(route.getVilleDep().getAbsCentre(), route.getVilleDep().getOrdCentre());
+			route.setArr(route.getVilleArr().getAbsCentre(), route.getVilleArr().getOrdCentre());
 		}
 	}
 
@@ -163,7 +162,7 @@ public class Controleur
 
 		for ( Route route : routes)
 		{
-			int epaisseur = 15;
+			int epaisseur = (int) ((route.getVilleDep().getLargeur() + route.getVilleArr().getLargeur()) / 4);
 		
 			int departx = route.getAbsDep();
 			int departy = route.getOrdDep();
