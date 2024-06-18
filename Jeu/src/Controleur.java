@@ -57,17 +57,16 @@ public class Controleur
 
 		this.tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 
+		// ihm
+		this.panelPlateau   = new PanelPlateau(this, this.tailleEcran);
+		this.framePlateau   = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
+
 		// metier
 		this.plateau        = new Plateau(joueur1, joueur2);
 		this.plateauJoueur1 = new PlateauJ(this.joueur1);
 		this.plateauJoueur2 = new PlateauJ(this.joueur2);
 
 		this.remplirPlateau(this.plateau);
-
-		// ihm
-		
-		this.panelPlateau   = new PanelPlateau(this, this.tailleEcran);
-		this.framePlateau   = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
 
 		this.framePlateauJ1 = new FramePlateauJ(joueur1.getNumero(), this.tailleEcran);
 
@@ -139,12 +138,16 @@ public class Controleur
 			}
 
 
-			int h = (int) (ville.getHauteur() * tailleEcran.height / 800);
-			int l = (int) (ville.getLargeur() * tailleEcran.width * 0.5 / 1000);
-			int x = (int) (ville.getAbscisse() * tailleEcran.width * 0.5 / 1000);
-			int y = (int) (ville.getOrdonnee() * tailleEcran.height / 800);
+			int lPanel = this.panelPlateau.getWidth();
+            int hPanel = this.panelPlateau.getHeight();
 
-			this.zonesCliquables.add(new ZoneCliquable(x, y, l, h, ville));
+            int x = ville.getAbscisse() * lPanel / 1000;
+            int y = ville.getOrdonnee() * hPanel / 800;
+
+            int lImage = (int) (lPanel * 0.04);
+            int hImage = lImage;
+
+			this.zonesCliquables.add(new ZoneCliquable(x, y, lImage, hImage, ville));
 
         }
 
@@ -188,10 +191,6 @@ public class Controleur
 			int departy = route.getOrdDep();
 			int arriveex = route.getAbsArr();
 			int arriveey = route.getOrdArr();
-		
-			int pasx = (arriveex - departx) / route.getNbTroncons();
-			int pasy = (arriveey - departy) / route.getNbTroncons();
-
 			int nbTroncons = route.getNbTroncons();
 
 			int numJoueur = 0;

@@ -45,8 +45,6 @@ public class PanelPlateau extends JPanel
 		int lPanel = getWidth();
 		int hPanel = getHeight();
 
-		//this.ctrl.setDimension(this.hPanel, this.lPanel);
-
 		g2.drawImage(fond, 0, 0, lPanel, hPanel, this);
 
 		this.ctrl.dessinerVillesEtRoutes(g, g2);
@@ -63,27 +61,30 @@ public class PanelPlateau extends JPanel
 		int x3, y3;
 
 		int lImage = (int) (lPanel * 0.04);
-		int hImage = lImage * image.getHeight(null) / image.getWidth(null);
-
-		g2.drawImage(image, x2, y2, lImage, hImage, this);
-		if (num != null)
+		if (image != null)
 		{
-			x3 = (int) (x2 + lImage / 2.5);
-			y3 = y2 + hImage / 3;
-			g2.drawString(num, x3, y3);
-		}
-		if (nom != null)
-		{
-			Image imageR = getToolkit().getImage("images/ressources/" + nom + ".png");
+			int hImage = lImage * image.getHeight(null) / image.getWidth(null);
 
-			lImage = (int) (lPanel * 0.03);		
+			g2.drawImage(image, x2, y2, lImage, hImage, this);
+			if (num != null)
+			{
+				x3 = (int) (x2 + lImage / 2.5);
+				y3 = y2 + hImage / 3;
+				g2.drawString(num, x3, y3);
+			}
+			if (nom != null)
+			{
+				Image imageR = getToolkit().getImage("images/ressources/" + nom + ".png");
 
-			g2.setColor(Color.BLACK);
+				lImage = (int) (lPanel * 0.03);		
 
-			x3 = x2 + lImage / 4;
-			y3 = y2 + hImage / 2;
+				g2.setColor(Color.BLACK);
 
-			g2.drawImage(imageR, x3, y3, lImage, lImage, this);
+				x3 = x2 + lImage / 4;
+				y3 = y2 + hImage / 2;
+
+				g2.drawImage(imageR, x3, y3, lImage, lImage, this);
+			}
 		}
 	}
 
