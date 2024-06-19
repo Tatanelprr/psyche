@@ -199,7 +199,8 @@ public class Controleur {
     public boolean selectionVilles(int x, int y) {
         for (ZoneCliquable zone : zonesCliquables) {
             if (zone.contains(x, y)) {
-                if (this.ville1 == null) {
+                if (this.ville1 == null || this.ville2 != null) {
+					this.ville2 = null;
                     this.ville1 = zone.getVilleAssociee();
                     return false;
                 } else {

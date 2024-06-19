@@ -66,7 +66,7 @@ public class PlateauJ {
 
             if (!colonne.isEmpty() && (colonne.get(0).getRegion().equals(v.getRegion()))) {
 
-                if (colonne.size() < 4) {
+                if (colonne.size() < 5) {
                     colonne.add(v);
                     return;
                 }
