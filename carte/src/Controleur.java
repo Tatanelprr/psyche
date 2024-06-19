@@ -133,7 +133,7 @@ public class Controleur
 					this.offsetX = e.getX() - x;
 					this.offsetY = e.getY() - y;
 					
-					infoText = "Nom: " + ville.getNom() + ", X: " + ville.getAbscisse() + ", Y: " + ville.getOrdonnee();
+					infoText = "Nom: " + ville.getNom() + ", X: " + ville.getAbscisse() + ", Y: " + ville.getOrdonnee() + ", Num : " + ville.getNumero();
 				}
 			}
 		return infoText;
@@ -198,7 +198,7 @@ public class Controleur
             for (Route route : Route.getRoutes())
 			{
 				String routeString = route.toString();
-				this.frame.ecrireVille(writer, routeString);
+				this.frame.ecrireRoute(writer, routeString);
             }
 	}
 

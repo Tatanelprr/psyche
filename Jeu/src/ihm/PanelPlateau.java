@@ -6,6 +6,7 @@ import Jeu.Controleur;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -76,6 +77,8 @@ public class PanelPlateau extends JPanel
 			{
 				x3 = (int) (x2 + lImage / 2.5);
 				y3 = y2 + hImage / 3;
+				g2.setFont(new Font("Dialog", Font.PLAIN, 12));
+				g2.setColor(Color.BLACK);
 				g2.drawString(num, x3, y3);
 			}
 			if (nom != null)
@@ -92,6 +95,10 @@ public class PanelPlateau extends JPanel
 				g2.drawImage(imageR, x3, y3, lImage, lImage, this);
 			}
 		}
+
+		g2.setFont(new Font("Serif", Font.BOLD, 24));
+		g2.setColor(Color.WHITE);
+		g2.drawString("Tour du joueur " + this.ctrl.getJoueurActif(), getWidth()/50, getHeight()/15); 
 	}
 
 	public void dessinerRoute(Graphics g, int epaisseur, int departx, int departy, int arriveex, int arriveey, int nbTroncons, int numeroJoueur) 

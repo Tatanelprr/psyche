@@ -28,7 +28,6 @@ public class Pioche
 			this.tabJeton.add(new Jeton(JetonRessource.MONNAIE));
 		}
 
-		Collections.shuffle(this.tabJeton);
 	}
 
 	public Jeton tirerJeton()
