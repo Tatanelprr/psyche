@@ -3,8 +3,8 @@ package Jeu.metier;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Joueur
-{
+public class Joueur {
+
     private static int increment = 1;
     private int numero;
     private String nom;
@@ -26,23 +26,23 @@ public class Joueur
         return this.nom;
     }
 
-    public int getNbJetPoss()
-    {
+    public int getNbJetPoss() {
         return this.nbJetPoss;
     }
 
-    public void setNbJetPoss(int nb)
-    {
+    public void setNbJetPoss(int nb) {
         this.nbJetPoss -= nb;
     }
 
-    public void setRessource(JetonRessource r)
-    {
+    public void setRessource(JetonRessource r) {
         this.plateau.ajouterJeton(r);
     }
 
-    public PlateauJ getPlateau()
-    {
+    public void setVille(Ville v) {
+        this.plateau.ajouterVille(v);
+    }
+
+    public PlateauJ getPlateau() {
         return this.plateau;
     }
 }
