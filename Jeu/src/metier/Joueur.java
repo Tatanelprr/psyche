@@ -10,24 +10,29 @@ public class Joueur {
     private String nom;
     private int nbJetPoss = 25;
 
-    public Joueur(String nom) {
+    public Joueur(String nom)
+	{
         this.numero = increment++;
         this.nom = nom;
     }
 
-    public int getNumero() {
+    public int getNumero()
+	{
         return this.numero;
     }
 
-    public String getNom() {
+    public String getNom()
+	{
         return this.nom;
     }
 
-    public int getNbJetPoss() {
+    public int getNbJetPoss()
+	{
         return this.nbJetPoss;
     }
 
-    public void setNbJetPoss(int nb) {
+    public void setNbJetPoss(int nb)
+	{
         this.nbJetPoss -= nb;
     }
 

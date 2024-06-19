@@ -9,7 +9,6 @@ import java.awt.*;
 
 public class FramePlateau extends JFrame
 {
-	private ImageIcon imagePlateau;
 	private int lEcran, hEcran;
 	private Controleur ctrl;
 

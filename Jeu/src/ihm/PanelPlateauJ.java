@@ -20,14 +20,16 @@ public class PanelPlateauJ extends JPanel {
     private Controleur ctrl;
     private int lImage, hImage;
 
-    public PanelPlateauJ(Controleur ctrl, Dimension tailleEcran, int numeroJoueur) {
+    public PanelPlateauJ(Controleur ctrl, Dimension tailleEcran, int numeroJoueur)
+	{
         this.ctrl = ctrl;
         this.hEcran = tailleEcran.height;
         this.lEcran = tailleEcran.width;
         this.numJoueur = numeroJoueur;
     }
 
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+	{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         Image fond = getToolkit().getImage("images/plateau_joueur_" + this.numJoueur + ".png");
@@ -53,7 +55,8 @@ public class PanelPlateauJ extends JPanel {
         this.ctrl.dessinerPlateauJ(g, this.numJoueur);
     }
 
-    public void dessinerPlateauJ(Graphics g, String nom, double x, double y) {
+    public void dessinerPlateauJ(Graphics g, String nom, double x, double y)
+	{
         Graphics2D g2 = (Graphics2D) g;
 
         Image pion = getToolkit().getImage("images/ressources/" + nom + ".png");
@@ -66,7 +69,8 @@ public class PanelPlateauJ extends JPanel {
         g2.drawImage(pion, x2, y2, tPion, tPion, this);
     }
 
-    public void dessinerVilles(Graphics g, String nom, String region, double x, double y) {
+    public void dessinerVilles(Graphics g, String nom, String region, double x, double y)
+	{
         Graphics2D g2 = (Graphics2D) g;
 
         Image imgMine = getToolkit().getImage("images/opaque/Mine_" + region + ".png");
@@ -83,7 +87,8 @@ public class PanelPlateauJ extends JPanel {
         int x3, y3;
 
         g2.drawImage(imgMine, x2, y2, lImgMine, hImgMine, this);
-        if (nom != null) {
+        if (nom != null)
+		{
             x3 = (int) (x2 + lImgMine / 2.5);
             y3 = y2 + hImgMine / 3;
             g2.drawString(nom, x3, y3);

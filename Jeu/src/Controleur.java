@@ -58,7 +58,8 @@ public class Controleur {
 
     private Dimension tailleEcran;
 
-    public Controleur() {
+    public Controleur()
+	{
         this.importerDonnees();
 
         this.tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
@@ -83,24 +84,30 @@ public class Controleur {
         this.joueurActif = this.joueur1;
     }
 
-    public void setDimension(int hauteur, int largeur) {
+    public void setDimension(int hauteur, int largeur)
+	{
         this.hauteurPlateau = hauteur;
         this.largeurPlateau = largeur;
     }
 
-    public int getNbPionJ(int numeroJoueur) {
-        if (numeroJoueur == 1) {
+    public int getNbPionJ(int numeroJoueur)
+	{
+        if (numeroJoueur == 1)
+		{
             return this.joueur1.getNbJetPoss();
         } else {
             return this.joueur2.getNbJetPoss();
         }
     }
 
-    public void remplirPlateau(Plateau plateau) {
-        for (int i = 1; i < 31; i++) {
+    public void remplirPlateau(Plateau plateau)
+	{
+        for (int i = 1; i < 31; i++)
+		{
             Jeton j = this.pioche.tirerJeton();
             IRessource r = j.getType();
-            if (r instanceof JetonRessource) {
+            if (r instanceof JetonRessource)
+			{
                 Ville v = Ville.trouverVilleParNum(i);
                 v.setRessource((JetonRessource) r);
             }
@@ -111,35 +118,45 @@ public class Controleur {
 
         this.remplirVille();
 
-        for (Route route : routes) {
+        for (Route route : routes)
+		{
             route.setDep(route.getVilleDep().getAbsCentre(), route.getVilleDep().getOrdCentre());
             route.setArr(route.getVilleArr().getAbsCentre(), route.getVilleArr().getOrdCentre());
         }
     }
 
-    public void remplirVille() {
-        for (Ville ville : villes) {
+    public void remplirVille()
+	{
+        for (Ville ville : villes)
+		{
             int numVille = ville.getNumero();
 
-            if (numVille == 0) {
+            if (numVille == 0)
+			{
                 ville.setImage("NvlRome", this.tailleEcran);
             }
-            if (numVille > 0 && numVille <= 5) {
+            if (numVille > 0 && numVille <= 5)
+			{
                 ville.setRegion("Bleu");
                 ville.setImage("Mine_Bleu", this.tailleEcran);
-            } else if (numVille > 5 && numVille <= 10) {
+            } else if (numVille > 5 && numVille <= 10)
+			{
                 ville.setRegion("Gris");
                 ville.setImage("Mine_Gris", this.tailleEcran);
-            } else if (numVille > 10 && numVille <= 15) {
+            } else if (numVille > 10 && numVille <= 15)
+			{
                 ville.setRegion("Jaune");
                 ville.setImage("Mine_Jaune", this.tailleEcran);
-            } else if (numVille > 15 && numVille <= 20) {
+            } else if (numVille > 15 && numVille <= 20)
+			{
                 ville.setRegion("Marron");
                 ville.setImage("Mine_Marron", this.tailleEcran);
-            } else if (numVille > 20 && numVille <= 25) {
+            } else if (numVille > 20 && numVille <= 25)
+			{
                 ville.setRegion("Rouge");
                 ville.setImage("Mine_Rouge", this.tailleEcran);
-            } else if (numVille > 25 && numVille <= 30) {
+            } else if (numVille > 25 && numVille <= 30)
+			{
                 ville.setRegion("Vert");
                 ville.setImage("Mine_Vert", this.tailleEcran);
             }
@@ -158,11 +175,13 @@ public class Controleur {
         }
     }
 
-    public void dessinerVillesEtRoutes(Graphics g, Graphics2D g2) {
+    public void dessinerVillesEtRoutes(Graphics g, Graphics2D g2)
+	{
         this.villes = Ville.getVilles();
         this.routes = Route.getRoutes();
 
-        for (Route route : routes) {
+        for (Route route : routes)
+		{
             int epaisseur = (int) ((route.getVilleDep().getLargeur() + route.getVilleArr().getLargeur()) / 4);
 
             int departx = route.getAbsDep();
@@ -172,14 +191,16 @@ public class Controleur {
             int nbTroncons = route.getNbTroncons();
 
             int numJoueur = 0;
-            if (route.getJoueur() != null) {
+            if (route.getJoueur() != null)
+			{
                 numJoueur = route.getJoueur().getNumero();
             }
 
             this.panelPlateau.dessinerRoute(g, epaisseur, departx, departy, arriveex, arriveey, nbTroncons, numJoueur);
         }
 
-        for (Ville ville : villes) {
+        for (Ville ville : villes)
+		{
             int numVille = ville.getNumero();
             String nom = ville.getNom();
             int x = ville.getAbscisse();
@@ -187,7 +208,8 @@ public class Controleur {
             JetonRessource r = ville.getRessource();
             Image image = ville.getImage();
 
-            if (ville.getNumero() != 0 && r != null) {
+            if (ville.getNumero() != 0 && r != null)
+			{
                 String nomImage = r.toString().toLowerCase();
                 this.panelPlateau.dessinerVille(g2, g, image, x, y, nom, nomImage);
             } else {
@@ -196,10 +218,14 @@ public class Controleur {
         }
     }
 
-    public boolean selectionVilles(int x, int y) {
-        for (ZoneCliquable zone : zonesCliquables) {
-            if (zone.contains(x, y)) {
-                if (this.ville1 == null || this.ville2 != null) {
+    public boolean selectionVilles(int x, int y)
+	{
+        for (ZoneCliquable zone : zonesCliquables)
+		{
+            if (zone.contains(x, y))
+			{
+                if (this.ville1 == null || this.ville2 != null)
+				{
 					this.ville2 = null;
                     this.ville1 = zone.getVilleAssociee();
                     return false;
@@ -212,19 +238,24 @@ public class Controleur {
         return false;
     }
 
-    public void dessinerPlateauJ(Graphics g, int num) {
-        if (num == 1) {
+    public void dessinerPlateauJ(Graphics g, int num)
+	{
+        if (num == 1)
+		{
             this.affichagePlateauJ(g, this.plateauJoueur1, this.panelPlateauJ1);
         } else {
             this.affichagePlateauJ(g, this.plateauJoueur2, this.panelPlateauJ2);
         }
     }
 
-    public void affichagePlateauJ(Graphics g, PlateauJ plateau, PanelPlateauJ panel) {
+    public void affichagePlateauJ(Graphics g, PlateauJ plateau, PanelPlateauJ panel)
+	{
         int abscisse = 0;
 
-        for (List<JetonRessource> colonne : plateau.getPlateau()) {
-            for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++) {
+        for (List<JetonRessource> colonne : plateau.getPlateau())
+		{
+            for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++)
+			{
                 JetonRessource jeton = colonne.get(ordonnee);
                 panel.dessinerPlateauJ(g, new Jeton(jeton).toString().toLowerCase(), this.abscissesRessources[abscisse],
                         this.ordonneesRessources[ordonnee]);
@@ -232,14 +263,17 @@ public class Controleur {
             abscisse += 1;
         }
 
-        for (int i = 0; i < plateau.getNbMonnaie(); i++) {
+        for (int i = 0; i < plateau.getNbMonnaie(); i++)
+		{
             panel.dessinerPlateauJ(g, new Jeton(JetonRessource.MONNAIE).toString().toLowerCase(), 0.11 + 0.1 * i, 0.82);
         }
 
         abscisse = 0;
-        for (List<Ville> colonne : plateau.getVilles()) {
+        for (List<Ville> colonne : plateau.getVilles())
+		{
 
-            for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++) {
+            for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++)
+			{
 
                 Ville v = colonne.get(ordonnee);
 				int lPanel = panel.getWidth();
@@ -252,12 +286,16 @@ public class Controleur {
         }
     }
 
-    public void deplacement() {
+    public void deplacement()
+	{
         if (this.ville1.estAdjacente(this.ville2) && (this.ville1.getJoueur() != null ^ this.ville2.getJoueur() != null)
-                && this.ville1 != this.ville2) {
+                && this.ville1 != this.ville2)
+				{
             Route.getRouteAvecVilles(this.ville1, this.ville2).possession(this.joueurActif);
-            if (this.joueurActif == this.joueur1) {
-                if (this.ville1.getJoueur() == null) {
+            if (this.joueurActif == this.joueur1)
+			{
+                if (this.ville1.getJoueur() == null)
+				{
                     this.ville1.setJoueur(this.joueur1);
                     this.plateauJoueur1.ajouterJeton(this.ville1.getRessource());
                     this.plateauJoueur1.ajouterVille(this.ville1);
@@ -271,7 +309,8 @@ public class Controleur {
                 this.panelPlateauJ1.repaint();
 
             } else {
-                if (this.ville1.getJoueur() == null) {
+                if (this.ville1.getJoueur() == null)
+				{
                     this.ville1.setJoueur(this.joueur2);
                     this.plateauJoueur2.ajouterJeton(this.ville1.getRessource());
                     this.plateauJoueur2.ajouterVille(this.ville1);
@@ -292,46 +331,59 @@ public class Controleur {
         }
     }
 
-    public void changeJoueur() {
-        if (this.joueurActif == this.joueur1) {
+    public void changeJoueur()
+	{
+        if (this.joueurActif == this.joueur1)
+		{
             this.joueurActif = this.joueur2;
         } else {
             this.joueurActif = this.joueur1;
         }
     }
 
-    private void importerDonnees() {
+    private void importerDonnees()
+	{
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Importer");
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/../carte/sauvegarde"));
         int userSelection = fileChooser.showOpenDialog(this.framePlateau);
 
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        if (userSelection == JFileChooser.APPROVE_OPTION)
+		{
             File selectedFile = fileChooser.getSelectedFile();
-            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile)))
+			{
                 String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.startsWith("Ville")) {
+                while ((line = reader.readLine()) != null)
+				{
+                    if (line.startsWith("Ville"))
+					{
                         String[] villeData = line.split(":");
-                        if (villeData.length >= 3) {
+                        if (villeData.length >= 3)
+						{
                             String nom = villeData[1];
                             String[] coords = villeData[2].trim().split(",");
-                            if (coords.length == 2) {
+                            if (coords.length == 2)
+							{
                                 int x = Integer.parseInt(coords[0].trim());
                                 int y = Integer.parseInt(coords[1].trim());
 
                                 Ville.creerVille(nom, x, y);
                             }
                         }
-                    } else if (line.startsWith("Route")) {
+                    }
+					else if (line.startsWith("Route"))
+					{
                         String[] routeData = line.split(":");
-                        if (routeData.length >= 3) {
+                        if (routeData.length >= 3)
+						{
                             int villeDepNum = Integer.parseInt(routeData[1]);
                             int villeArrNum = Integer.parseInt(routeData[2]);
                             Ville villeDep = Ville.trouverVilleParNum(villeDepNum);
                             Ville villeArr = Ville.trouverVilleParNum(villeArrNum);
 
-                            if (villeDep != null && villeArr != null) {
+                            if (villeDep != null && villeArr != null)
+							{
                                 int nbTroncons = Integer.parseInt(routeData[3].trim());
 
                                 Route r = Route.ajouterRoute(nbTroncons, villeDep, villeArr);
@@ -344,11 +396,15 @@ public class Controleur {
                 }
                 JOptionPane.showMessageDialog(this.framePlateau, "Données importées avec succès !", "Succès",
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException e) {
+            }
+			catch (IOException e)
+			{
                 JOptionPane.showMessageDialog(this.framePlateau, "Erreur lors de l'importation des données !", "Erreur",
                         JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
-            } catch (NumberFormatException e) {
+            }
+			catch (NumberFormatException e)
+			{
                 JOptionPane.showMessageDialog(this.framePlateau, "Erreur de format dans les données !", "Erreur",
                         JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
@@ -356,7 +412,8 @@ public class Controleur {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+	{
         new Controleur();
     }
 }

@@ -52,11 +52,20 @@ public class Route
 
 	}
 
-	public Ville getVilleDep() { return this.villeDep; }
+	public Ville getVilleDep()
+	{
+		return this.villeDep;
+	}
 
-	public Ville getVilleArr() { return this.villeArr; }
+	public Ville getVilleArr()
+	{
+		return this.villeArr;
+	}
 
-	public int getNbTroncons() { return this.nbTroncons; }
+	public int getNbTroncons()
+	{
+		return this.nbTroncons;
+	}
 
 	public void setDep(int absDep, int ordDep)
 	{
@@ -70,13 +79,21 @@ public class Route
 		this.ordArr = ordArr;
 	}
 
-	public int getAbsDep(){ return this.absDep; }
+	public int getAbsDep(){
+		return this.absDep;
+	}
 
-	public int getOrdDep(){ return this.ordDep; }
+	public int getOrdDep(){
+		return this.ordDep;
+	}
 
-	public int getAbsArr(){ return this.absArr; }
+	public int getAbsArr(){
+		return this.absArr;
+	}
 
-	public int getOrdArr(){ return this.ordArr; }	
+	public int getOrdArr(){
+		return this.ordArr;
+	}	
 
 	public String toString()
 	{
@@ -111,5 +128,8 @@ public class Route
 	
 	
 
-	public static List<Route> getRoutes() { return routes; }
+	public static List<Route> getRoutes()
+	{
+		return routes;
+	}
 }

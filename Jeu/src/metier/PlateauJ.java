@@ -18,13 +18,16 @@ public class PlateauJ {
     private int score;
     private String detailScore;
 
-    public PlateauJ(Joueur joueur) {
+    public PlateauJ(Joueur joueur)
+	{
         this.plateau = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++)
+		{
             this.plateau.add(new ArrayList<>());
         }
         this.villes = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++)
+		{
             this.villes.add(new ArrayList<>());
         }
         this.nbMonnaie = 0;
@@ -33,48 +36,61 @@ public class PlateauJ {
 
     }
 
-    public int getScore() {
+    public int getScore()
+	{
         return this.score;
     }
 
-    public JetonRessource getRessource(int i, int j) {
+    public JetonRessource getRessource(int i, int j)
+	{
         return this.plateau.get(i).get(j);
     }
 
-    public List<List<JetonRessource>> getPlateau() {
+    public List<List<JetonRessource>> getPlateau()
+	{
         return this.plateau;
     }
 
-    public List<List<Ville>> getVilles() {
+    public List<List<Ville>> getVilles()
+	{
         return this.villes;
     }
 
-    public int getNbMonnaie() {
+    public int getNbMonnaie()
+	{
         return this.nbMonnaie;
     }
 
-    public Joueur getJoueur() {
+    public Joueur getJoueur()
+	{
         return this.joueur;
     }
 
-    public String getDetailScore() {
+    public String getDetailScore()
+	{
         return this.detailScore;
     }
 
-    public void ajouterVille(Ville v) {
-        for (List<Ville> colonne : this.villes) {
+    public void ajouterVille(Ville v)
+	{
+        for (List<Ville> colonne : this.villes)
+		{
 
-            if (!colonne.isEmpty() && (colonne.get(0).getRegion().equals(v.getRegion()))) {
+            if (!colonne.isEmpty() && (colonne.get(0).getRegion().equals(v.getRegion())))
+			{
 
-                if (colonne.size() < 5) {
+                if (colonne.size() < 5)
+				{
                     colonne.add(v);
                     return;
                 }
             }
         }
 
-        for (List<Ville> colonne : this.villes) {
-            if (colonne.isEmpty()) {
+        for (List<Ville> colonne : this.villes)
+		{
+            if (colonne.isEmpty())
+			{
                 colonne.add(v);
                 break;
             }
@@ -82,27 +98,35 @@ public class PlateauJ {
 
     }
 
-    public boolean ajouterRessource(Jeton r) {
+    public boolean ajouterRessource(Jeton r)
+	{
         IRessource type = r.getType();
-        if (type instanceof JetonRessource) {
+        if (type instanceof JetonRessource)
+		{
             return ajouterJeton((JetonRessource) type);
         }
         return false;
     }
 
-    public boolean ajouterJeton(JetonRessource jeton) {
-        for (List<JetonRessource> colonne : this.plateau) {
+    public boolean ajouterJeton(JetonRessource jeton)
+	{
+        for (List<JetonRessource> colonne : this.plateau)
+		{
 
-            if (jeton.toString().toLowerCase().equals("monnaie")) {
-                if (NB_MONNAIE_MAX > this.nbMonnaie) {
+            if (jeton.toString().toLowerCase().equals("monnaie"))
+			{
+                if (NB_MONNAIE_MAX > this.nbMonnaie)
+				{
                     this.nbMonnaie++;
                     return true;
                 }
                 return false;
             } else {
-                if (!colonne.isEmpty() && colonne.get(0) == jeton) {
+                if (!colonne.isEmpty() && colonne.get(0) == jeton)
+				{
 
-                    if (colonne.size() < 4) {
+                    if (colonne.size() < 4)
+					{
                         colonne.add(jeton);
                         this.triColonnes();
                         return true;
@@ -110,8 +134,10 @@ public class PlateauJ {
                 }
             }
         }
-        for (List<JetonRessource> colonne : plateau) {
-            if (colonne.isEmpty()) {
+        for (List<JetonRessource> colonne : plateau)
+		{
+            if (colonne.isEmpty())
+			{
                 colonne.add(jeton);
                 this.triColonnes();
                 return true;
@@ -120,7 +146,8 @@ public class PlateauJ {
         return false;
     }
 
-    public void calculerScore() {
+    public void calculerScore()
+	{
         int i;
         int j = 0;
 
@@ -133,16 +160,20 @@ public class PlateauJ {
             this.detailScore += (this.nbMonnaie * this.nbMonnaie) + " pt\n	";
         }
 
-        for (j = 0; j < NB_COL_MAX; j++) {
+        for (j = 0; j < NB_COL_MAX; j++)
+		{
             int casesRemplies = 0;
 
-            for (i = 0; i < NB_LIG_MAX; i++) {
-                if (plateau.get(i).get(j) != null) {
+            for (i = 0; i < NB_LIG_MAX; i++)
+			{
+                if (plateau.get(i).get(j) != null)
+				{
                     casesRemplies++; // Compte le nombre de cases remplies par colonnes
                 }
             }
 
-            switch (casesRemplies) {
+            switch (casesRemplies)
+			{
                 case 0:
                     this.score += 0;
                     this.detailScore += (String.format("%-15s", "Colonne " + (j + 1)) + ": ") + 0 + "  pt\n	";
@@ -166,15 +197,19 @@ public class PlateauJ {
             }
         }
 
-        for (i = 0; i < NB_LIG_MAX; i++) {
+        for (i = 0; i < NB_LIG_MAX; i++)
+		{
             int casesRemplies = 0;
 
-            for (j = 0; j < NB_COL_MAX; j++) {
-                if (plateau.get(i).get(j) != null) {
+            for (j = 0; j < NB_COL_MAX; j++)
+			{
+                if (plateau.get(i).get(j) != null)
+				{
                     casesRemplies++; // Compte le nombre de cases remplies par lignes
                 }
             }
-            switch (casesRemplies) {
+            switch (casesRemplies)
+			{
                 case 0:
                     this.score += 0;
                     this.detailScore += (String.format("%-15s", "Ligne " + (i + 1)) + ": ") + 0 + "  pt\n	";
@@ -207,19 +242,24 @@ public class PlateauJ {
         }
     }
 
-    public String toString() {
+    public String toString()
+	{
         String sRet;
         String sep = "+-----";
 
         sRet = "";
-        for (int i = 0; i < NB_LIG_MAX; i++) {
-            for (int j = 0; j < NB_COL_MAX; j++) {
+        for (int i = 0; i < NB_LIG_MAX; i++)
+		{
+            for (int j = 0; j < NB_COL_MAX; j++)
+			{
                 sRet += sep;
             }
             sRet += "+ \n";
-            for (int j = 0; j < NB_COL_MAX; j++) {
+            for (int j = 0; j < NB_COL_MAX; j++)
+			{
                 sRet += "| ";
-                if (plateau.get(i).get(j) == null) {
+                if (plateau.get(i).get(j) == null)
+				{
                     sRet += "    ";
                 } else {
                     sRet += plateau.get(i).get(j).getLibCourt();
@@ -229,7 +269,8 @@ public class PlateauJ {
             sRet += "|\n";
         }
 
-        for (int j = 0; j < NB_COL_MAX; j++) {
+        for (int j = 0; j < NB_COL_MAX; j++)
+		{
             sRet += sep;
         }
         sRet += "+";
@@ -237,9 +278,12 @@ public class PlateauJ {
         return sRet;
     }
 
-    public void triColonnes() {
-        Comparator<List<JetonRessource>> comparator = new Comparator<List<JetonRessource>>() {
-            public int compare(List<JetonRessource> colonne1, List<JetonRessource> colonne2) {
+    public void triColonnes()
+	{
+        Comparator<List<JetonRessource>> comparator = new Comparator<List<JetonRessource>>()
+		{
+            public int compare(List<JetonRessource> colonne1, List<JetonRessource> colonne2)
+			{
                 return Integer.compare(colonne2.size(), colonne1.size());
             }
         };
