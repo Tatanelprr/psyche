@@ -9,13 +9,10 @@ public class Joueur {
     private int numero;
     private String nom;
     private int nbJetPoss = 25;
-    private List<JetonRessource> ressources = new ArrayList<>();
-    private PlateauJ plateau;
 
     public Joueur(String nom) {
         this.numero = increment++;
         this.nom = nom;
-        this.plateau = new PlateauJ(this);
     }
 
     public int getNumero() {
@@ -34,15 +31,4 @@ public class Joueur {
         this.nbJetPoss -= nb;
     }
 
-    public void setRessource(JetonRessource r) {
-        this.plateau.ajouterJeton(r);
-    }
-
-    public void setVille(Ville v) {
-        this.plateau.ajouterVille(v);
-    }
-
-    public PlateauJ getPlateau() {
-        return this.plateau;
-    }
 }

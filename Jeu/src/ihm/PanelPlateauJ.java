@@ -69,19 +69,24 @@ public class PanelPlateauJ extends JPanel {
     public void dessinerVilles(Graphics g, String nom, String region, double x, double y) {
         Graphics2D g2 = (Graphics2D) g;
 
-        Image pion = getToolkit().getImage("images/opaque/Mine_" + region + ".png");
+        Image imgMine = getToolkit().getImage("images/opaque/Mine_" + region + ".png");
 
-        System.out.println("aaa");
+        int largeurOriginale = imgMine.getWidth(this);
+        int hauteurOriginale = imgMine.getHeight(this);
 
-        int largeurOriginale = pion.getWidth(this);
-        int hauteurOriginale = pion.getHeight(this);
+        int lImgMine = (int) (getWidth() * 0.05);
+        int hImgMine = (int) ((double) hauteurOriginale / largeurOriginale * lImgMine);
 
-        int lPion = (int) (getWidth() * 0.05);
-        int hPion = (int) ((double) hauteurOriginale / largeurOriginale * lPion);
+        int x2 = (int) (x);
+        int y2 = (int) (y);
 
-        int x2 = (int) (x * this.lImage + this.lImage);
-        int y2 = (int) (y * this.hImage);
+        int x3, y3;
 
-        g2.drawImage(pion, x2, y2, lPion, hPion, this);
+        g2.drawImage(imgMine, x2, y2, lImgMine, hImgMine, this);
+        if (nom != null) {
+            x3 = (int) (x2 + lImgMine / 2.5);
+            y3 = y2 + hImgMine / 3;
+            g2.drawString(nom, x3, y3);
+        }
     }
 }

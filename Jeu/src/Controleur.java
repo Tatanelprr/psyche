@@ -45,8 +45,8 @@ public class Controleur {
     private List<ZoneCliquable> zonesCliquables = new ArrayList<>();
 
     // ihm
-    private final double[] abscissesRessources = {0.11, 0.21, 0.31, 0.40, 0.50, 0.59, 0.69, 0.79};
-    private final double[] ordonneesRessources = {0.54, 0.40, 0.26, 0.12};
+    private final double[] abscissesRessources = { 0.11, 0.21, 0.31, 0.40, 0.50, 0.59, 0.69, 0.79 };
+    private final double[] ordonneesRessources = { 0.54, 0.40, 0.26, 0.12 };
 
     private FramePlateau framePlateau;
     private PanelPlateau panelPlateau;
@@ -74,8 +74,8 @@ public class Controleur {
 
         // metier
         this.plateau = new Plateau(this.joueur1, this.joueur2);
-        this.plateauJoueur1 = new PlateauJ(this.joueur1);
-        this.plateauJoueur2 = new PlateauJ(this.joueur2);
+        this.plateauJoueur1 = new PlateauJ(joueur1);
+        this.plateauJoueur2 = new PlateauJ(joueur2);
 
         this.remplirPlateau(this.plateau);
 
@@ -225,13 +225,14 @@ public class Controleur {
         for (List<JetonRessource> colonne : plateau.getPlateau()) {
             for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++) {
                 JetonRessource jeton = colonne.get(ordonnee);
-                panel.dessinerPlateauJ(g, new Jeton(jeton).toString(), this.abscissesRessources[abscisse], this.ordonneesRessources[ordonnee]);
+                panel.dessinerPlateauJ(g, new Jeton(jeton).toString().toLowerCase(), this.abscissesRessources[abscisse],
+                        this.ordonneesRessources[ordonnee]);
             }
             abscisse += 1;
         }
 
         for (int i = 0; i < plateau.getNbMonnaie(); i++) {
-            panel.dessinerPlateauJ(g, new Jeton(JetonRessource.MONNAIE).toString(), 0.11 + 0.1 * i, 0.82);
+            panel.dessinerPlateauJ(g, new Jeton(JetonRessource.MONNAIE).toString().toLowerCase(), 0.11 + 0.1 * i, 0.82);
         }
 
         abscisse = 0;
@@ -240,43 +241,46 @@ public class Controleur {
             for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++) {
 
                 Ville v = colonne.get(ordonnee);
-                panel.dessinerVilles(g, v.getNom(), v.getRegion(), 0.11 + 0.1 * abscisse, 0.11 + 0.1 * ordonnee);
+				int lPanel = panel.getWidth();
+				int hPanel = panel.getHeight();
+
+                panel.dessinerVilles(g, v.getNom(), v.getRegion(), lPanel * 0.67 + 0.053 * lPanel * abscisse, 0.1 * hPanel + 0.1 * hPanel * ordonnee);
+
             }
             abscisse += 1;
         }
     }
 
     public void deplacement() {
-        if (this.ville1.estAdjacente(this.ville2) && (this.ville1.getJoueur() != null ^ this.ville2.getJoueur() != null) && this.ville1 != this.ville2) {
+        if (this.ville1.estAdjacente(this.ville2) && (this.ville1.getJoueur() != null ^ this.ville2.getJoueur() != null)
+                && this.ville1 != this.ville2) {
             Route.getRouteAvecVilles(this.ville1, this.ville2).possession(this.joueurActif);
             if (this.joueurActif == this.joueur1) {
                 if (this.ville1.getJoueur() == null) {
                     this.ville1.setJoueur(this.joueur1);
-                    this.joueur1.setRessource(this.ville1.getRessource());
-                    this.joueur1.setVille(this.ville1);
+                    this.plateauJoueur1.ajouterJeton(this.ville1.getRessource());
+                    this.plateauJoueur1.ajouterVille(this.ville1);
                     this.ville1.enleverRessource();
                 } else {
                     this.ville2.setJoueur(this.joueur1);
-                    this.joueur1.setRessource(this.ville2.getRessource());
-                    this.joueur1.setVille(this.ville2);
+                    this.plateauJoueur1.ajouterJeton(this.ville2.getRessource());
+                    this.plateauJoueur1.ajouterVille(this.ville2);
                     this.ville2.enleverRessource();
                 }
-                this.plateauJoueur1 = this.joueur1.getPlateau();
                 this.panelPlateauJ1.repaint();
 
             } else {
                 if (this.ville1.getJoueur() == null) {
                     this.ville1.setJoueur(this.joueur2);
-                    this.joueur2.setRessource(this.ville1.getRessource());
-                    this.joueur2.setVille(this.ville1);
+                    this.plateauJoueur2.ajouterJeton(this.ville1.getRessource());
+                    this.plateauJoueur2.ajouterVille(this.ville1);
                     this.ville1.enleverRessource();
                 } else {
                     this.ville2.setJoueur(this.joueur2);
-                    this.joueur2.setRessource(this.ville2.getRessource());
-                    this.joueur2.setVille(this.ville2);
+                    this.plateauJoueur2.ajouterJeton(this.ville2.getRessource());
+                    this.plateauJoueur2.ajouterVille(this.ville2);
                     this.ville2.enleverRessource();
                 }
-                this.plateauJoueur2 = this.joueur2.getPlateau();
                 this.panelPlateauJ2.repaint();
             }
 
@@ -337,12 +341,15 @@ public class Controleur {
                         }
                     }
                 }
-                JOptionPane.showMessageDialog(this.framePlateau, "Données importées avec succès !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this.framePlateau, "Données importées avec succès !", "Succès",
+                        JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(this.framePlateau, "Erreur lors de l'importation des données !", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this.framePlateau, "Erreur lors de l'importation des données !", "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this.framePlateau, "Erreur de format dans les données !", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this.framePlateau, "Erreur de format dans les données !", "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
         }

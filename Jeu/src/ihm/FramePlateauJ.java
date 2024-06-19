@@ -28,7 +28,7 @@ public class FramePlateauJ extends JFrame
 			this.setLocation(0, this.hEcran / 2);
 		}
 
-		this.setSize((int) (this.lEcran * 0.45), (int) (this.hEcran * 0.45));
+		this.setSize((int) (this.lEcran * 0.48), (int) (this.hEcran * 0.45));
 		this.add(panel);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
