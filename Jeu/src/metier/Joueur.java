@@ -10,10 +10,12 @@ public class Joueur
     private String nom;
     private int nbJetPoss = 25;
     private List<JetonRessource> ressources = new ArrayList<>();
+    private PlateauJ plateau;
 
     public Joueur(String nom) {
         this.numero = increment++;
         this.nom = nom;
+        this.plateau = new PlateauJ(this);
     }
 
     public int getNumero() {
@@ -36,6 +38,11 @@ public class Joueur
 
     public void setRessource(JetonRessource r)
     {
-        this.ressources.add(r);
+        this.plateau.ajouterJeton(r);
+    }
+
+    public PlateauJ getPlateau()
+    {
+        return this.plateau;
     }
 }

@@ -71,7 +71,7 @@ public class PlateauJ
 		return false;
 	}
 
-	private boolean ajouterJeton(JetonRessource jeton)
+	public boolean ajouterJeton(JetonRessource jeton)
 	{
 		for (List<JetonRessource> colonne : this.plateau)
 		{
@@ -243,17 +243,15 @@ public class PlateauJ
 		return sRet;
 	}
 
-	public void triColonnes() {
-		// Utilisation d'un Comparator pour trier les colonnes par taille décroissante
-		Comparator<List<JetonRessource>> comparator = new Comparator<List<JetonRessource>>() {
+	public void triColonnes()
+	{
+		Comparator<List<JetonRessource>> comparator = new Comparator<List<JetonRessource>>()
+		{
 			public int compare(List<JetonRessource> colonne1, List<JetonRessource> colonne2) 
 			{
-				// Comparaison par la taille (nombre de jetons dans chaque colonne) en ordre décroissant
 				return Integer.compare(colonne2.size(), colonne1.size());
 			}
 		};
-	
-		// Tri des colonnes en utilisant le Comparator
 		this.plateau.sort(comparator);
 	}
 	

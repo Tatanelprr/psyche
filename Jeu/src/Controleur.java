@@ -39,6 +39,7 @@ public class Controleur
 	private Plateau plateau;
 	private PlateauJ plateauJoueur1;
 	private PlateauJ plateauJoueur2;
+
 	private Ville ville1, ville2;
 	private Pioche pioche = new Pioche();
 	private static List<Ville> villes = new ArrayList<>();
@@ -46,8 +47,8 @@ public class Controleur
 	private List<ZoneCliquable> zonesCliquables = new ArrayList<>();
 
 	// ihm
-	private int[] abscissesRessources = { 44, 81, 118, 155, 192, 229, 266, 303 };
-	private int[] ordonneesRessources = { 151, 113, 75, 37 };
+	private double[] abscissesRessources = { 0.11, 0.21, 0.31, 0.41, 0.51, 0.61, 0.71, 0.81 };
+	private double[] ordonneesRessources = { 0.54, 0.44, 0.34, 0.24 };
 	
 	private FramePlateau  framePlateau;
 	private PanelPlateau  panelPlateau;
@@ -70,8 +71,8 @@ public class Controleur
 		this.panelPlateau   = new PanelPlateau(this, this.tailleEcran);
 		this.framePlateau   = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
 
-		this.panelPlateauJ1 = new PanelPlateauJ(this, this.tailleEcran, this.joueur2.getNumero());
-		this.panelPlateauJ2 = new PanelPlateauJ(this, this.tailleEcran, this.joueur1.getNumero());
+		this.panelPlateauJ1 = new PanelPlateauJ(this, this.tailleEcran, this.joueur1.getNumero());
+		this.panelPlateauJ2 = new PanelPlateauJ(this, this.tailleEcran, this.joueur2.getNumero());
 		this.framePlateauJ1 = new FramePlateauJ(this, this.joueur1.getNumero(), this.tailleEcran, this.panelPlateauJ1);
 		this.framePlateauJ2 = new FramePlateauJ(this, this.joueur2.getNumero(), this.tailleEcran, this.panelPlateauJ2);
 
@@ -251,28 +252,81 @@ public class Controleur
 		return false;
 	}
 
+	public void dessinerPlateauJ(Graphics g, int num)
+	{
+		if (num == 1)
+		{
+			this.affichagePlateauJ(g, this.plateauJoueur1, this.panelPlateauJ1);
+		}
+		else
+		{
+			this.affichagePlateauJ(g, this.plateauJoueur2, this.panelPlateauJ2);
+		}
+	}
+
+	public void affichagePlateauJ(Graphics g, PlateauJ plateau, PanelPlateauJ panel)
+	{
+		int abscisse = 0;
+
+		for (List<JetonRessource> colonne : plateau.getPlateau())
+		{
+			for (int ordonnee = 0; ordonnee < colonne.size(); ordonnee++)
+			{
+				JetonRessource jeton = colonne.get(ordonnee);
+				panel.dessinerPlateauJ(g, new Jeton(jeton).toString(), this.abscissesRessources[abscisse], this.ordonneesRessources[ordonnee]);
+			}
+			abscisse += 1;
+		}
+
+		for (int i = 0; i < plateau.getNbMonnaie(); i++)
+		{
+			panel.dessinerPlateauJ(g, new Jeton(JetonRessource.MONNAIE).toString(), 0.11 + 0.1 * i, 0.82);
+		}
+	}
+
 	public void deplacement()
 	{
 		if (this.ville1.estAdjacente(this.ville2) && (this.ville1.getJoueur() != null ^ this.ville2.getJoueur() != null) && this.ville1 != this.ville2)
 		{
 			Route.getRouteAvecVilles(this.ville1, this.ville2).possession(this.joueurActif);
-			if (this.ville1.getJoueur() == null)
+			if (this.joueurActif == this.joueur1)
 			{
-				this.ville1.setJoueur(this.joueurActif);
-				this.joueurActif.setRessource(this.ville1.getRessource());
-				this.ville1.enleverRessource();
+				if (this.ville1.getJoueur() == null)
+				{
+					this.ville1.setJoueur(this.joueur1);
+					this.joueur1.setRessource(this.ville1.getRessource());
+					this.ville1.enleverRessource();
+				}
+				else
+				{
+					this.ville2.setJoueur(this.joueur1);
+					this.joueur1.setRessource(this.ville2.getRessource());
+					this.ville2.enleverRessource();
+				}
+				this.plateauJoueur1 = this.joueur1.getPlateau();
+				this.panelPlateauJ1.repaint();
+				
 			}
 			else
 			{
-				this.ville2.setJoueur(this.joueurActif);
-				this.joueurActif.setRessource(this.ville2.getRessource());
-				this.ville2.enleverRessource();
+				if (this.ville1.getJoueur() == null)
+				{
+					this.ville1.setJoueur(this.joueur2);
+					this.joueur2.setRessource(this.ville1.getRessource());
+					this.ville1.enleverRessource();
+				}
+				else
+				{
+					this.ville2.setJoueur(this.joueur2);
+					this.joueur2.setRessource(this.ville2.getRessource());
+					this.ville2.enleverRessource();
+				}
+				this.plateauJoueur2 = this.joueur2.getPlateau();
+				this.panelPlateauJ2.repaint();
 			}
 
 			this.remplirVille();
 			this.changeJoueur();
-			this.panelPlateauJ1.repaint();
-			this.panelPlateauJ2.repaint();
 			this.ville1 = null;
 			this.ville2 = null;
 		}

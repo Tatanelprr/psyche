@@ -18,6 +18,7 @@ public class PanelPlateauJ extends JPanel
     private int hEcran, lEcran;
     private int numJoueur;
 	private Controleur ctrl;
+    private int lImage, hImage;
 
 	public PanelPlateauJ(Controleur ctrl, Dimension tailleEcran, int numeroJoueur)
 	{
@@ -36,20 +37,36 @@ public class PanelPlateauJ extends JPanel
         int largeurOriginale = fond.getWidth(this);
         int hauteurOriginale = fond.getHeight(this);
 
-        int lPanel = getWidth() * 2 / 3;
-		int hPanel = (int) ((double)hauteurOriginale / largeurOriginale * lPanel);
+        this.lImage = getWidth() * 2 / 3;
+		this.hImage = (int) ((double)hauteurOriginale / largeurOriginale * lImage);
 
-		g2.drawImage(fond, 0, 0, lPanel, hPanel, this);
+		g2.drawImage(fond, 0, 0, lImage, hImage, this);
 
         
 		Image pion = getToolkit().getImage("images/pion_joueur_" + this.numJoueur + ".png");
-        int tImage = getHeight() - hPanel;
+        int tImage = getHeight() - hImage;
 
-		g2.drawImage(pion, 0, hPanel, tImage, tImage, this);
+		g2.drawImage(pion, 0, hImage, tImage, tImage, this);
 
         int nbPion = this.ctrl.getNbPionJ(this.numJoueur);
         String pions = ("X " + nbPion);
 
-        g.drawString(pions, tImage + 5, hPanel + tImage / 2);
+        g.drawString(pions, tImage + 5, hImage + tImage / 2);
+
+        this.ctrl.dessinerPlateauJ(g, this.numJoueur);
+    }
+
+    public void dessinerPlateauJ(Graphics g, String nom, double x, double y)
+    {
+		Graphics2D g2 = (Graphics2D) g;
+
+		Image pion = getToolkit().getImage("images/ressources/" + nom + ".png");
+
+        int tPion = (int) (this.lImage * 0.1);
+
+        int x2 = (int) (x * this.lImage);
+        int y2 = (int) (y * this.hImage);
+
+        g2.drawImage(pion, x2, y2, tPion, tPion, this);
     }
 }
