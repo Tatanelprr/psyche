@@ -14,6 +14,7 @@ import Jeu.metier.Route;
 import Jeu.ihm.FramePlateauJ;
 import Jeu.ihm.FramePlateau;
 import Jeu.ihm.PanelPlateau;
+import Jeu.ihm.PanelPlateauJ;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,10 +48,15 @@ public class Controleur
 	// ihm
 	private int[] abscissesRessources = { 44, 81, 118, 155, 192, 229, 266, 303 };
 	private int[] ordonneesRessources = { 151, 113, 75, 37 };
+	
 	private FramePlateau  framePlateau;
 	private PanelPlateau  panelPlateau;
+
 	private FramePlateauJ framePlateauJ1;
 	private FramePlateauJ framePlateauJ2;
+	private PanelPlateauJ panelPlateauJ1;
+	private PanelPlateauJ panelPlateauJ2;
+
 	private Dimension tailleEcran;
 
 
@@ -64,16 +70,17 @@ public class Controleur
 		this.panelPlateau   = new PanelPlateau(this, this.tailleEcran);
 		this.framePlateau   = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
 
+		this.panelPlateauJ1 = new PanelPlateauJ(this, this.tailleEcran, this.joueur2.getNumero());
+		this.panelPlateauJ2 = new PanelPlateauJ(this, this.tailleEcran, this.joueur1.getNumero());
+		this.framePlateauJ1 = new FramePlateauJ(this, this.joueur1.getNumero(), this.tailleEcran, this.panelPlateauJ1);
+		this.framePlateauJ2 = new FramePlateauJ(this, this.joueur2.getNumero(), this.tailleEcran, this.panelPlateauJ2);
+
 		// metier
-		this.plateau        = new Plateau(joueur1, joueur2);
+		this.plateau        = new Plateau(this.joueur1, this.joueur2);
 		this.plateauJoueur1 = new PlateauJ(this.joueur1);
 		this.plateauJoueur2 = new PlateauJ(this.joueur2);
 
 		this.remplirPlateau(this.plateau);
-
-		this.framePlateauJ1 = new FramePlateauJ(joueur1.getNumero(), this.tailleEcran);
-
-		this.framePlateauJ2 = new FramePlateauJ(joueur2.getNumero(), this.tailleEcran);
 
 		Ville.trouverVilleParNum(0).possession(this.nvlRome);
 		this.joueurActif = this.joueur1;
@@ -83,6 +90,18 @@ public class Controleur
 	{
 		this.hauteurPlateau = hauteur;
 		this.largeurPlateau = largeur;
+	}
+
+	public int getNbPionJ(int numeroJoueur)
+	{
+		if (numeroJoueur == 1)
+		{
+			return this.joueur1.getNbJetPoss();
+		}
+		else
+		{
+			return this.joueur2.getNbJetPoss();
+		}
 	}
 
 	public void remplirPlateau(Plateau plateau)
@@ -252,6 +271,8 @@ public class Controleur
 
 			this.remplirVille();
 			this.changeJoueur();
+			this.panelPlateauJ1.repaint();
+			this.panelPlateauJ2.repaint();
 			this.ville1 = null;
 			this.ville2 = null;
 		}

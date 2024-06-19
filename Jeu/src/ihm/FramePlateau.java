@@ -10,8 +10,6 @@ import java.awt.*;
 public class FramePlateau extends JFrame
 {
 	private ImageIcon imagePlateau;
-	private JLabel labelPlateau;
-	private JLayeredPane layeredPane;
 	private int lEcran, hEcran;
 	private Controleur ctrl;
 
@@ -23,7 +21,7 @@ public class FramePlateau extends JFrame
 
 		this.setTitle("Plateau");
 		this.setSize((int) (this.lEcran * 0.5), this.hEcran);
-		this.setLocation((int) (this.lEcran * 0.25), 0);
+		this.setLocation((int) (this.lEcran * 0.5), 0);
 
 		this.add(panel);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
