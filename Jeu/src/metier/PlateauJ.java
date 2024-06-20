@@ -12,8 +12,8 @@ public class PlateauJ {
 
     private final int NB_COL_MAX = 7;
     private final int NB_LIG_MAX = 4;
-    private final List<List<JetonRessource>> plateau;
-    private final List<List<Ville>> villes;
+    private List<List<JetonRessource>> plateau;
+    private List<List<Ville>> villes;
 
     private int score;
     private String detailScore;
@@ -145,6 +145,23 @@ public class PlateauJ {
         }
         return false;
     }
+
+	public void viderPlateauJ()
+	{
+		this.plateau = new ArrayList<>();
+        for (int i = 0; i < 7; i++)
+		{
+            this.plateau.add(new ArrayList<>());
+        }
+        this.villes = new ArrayList<>();
+        for (int i = 0; i < 6; i++)
+		{
+            this.villes.add(new ArrayList<>());
+        }
+        this.nbMonnaie = 0;
+        this.score = 0;
+        this.detailScore = "";
+	}
 
     public void calculerScore()
 	{

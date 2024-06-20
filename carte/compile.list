@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Supprimer les fichiers compilés existants
+echo "Nettoyage des anciens fichiers compilés..."
+rm -rf bin/*
+
+# Compilation des fichiers source
+echo "Compilation en cours..."
+javac -d bin -sourcepath src src/Controleur.java src/ihm/*.java src/metier/*.java src/Controleur.java src/ihm/*.java src/metier/*.java
+
+# Vérifier si la compilation a réussi
+if [ $? -eq 0 ]; then
+    echo "Compilation réussie."
+else
+    echo "Erreur de compilation."
+    exit 1
+fi
+
+# Exécution du programme principal avec paramètre
+echo "Lancement du programme..."
+java -cp bin carte.Controleur
+
+
+# Fin du script
+echo "Programme terminé."

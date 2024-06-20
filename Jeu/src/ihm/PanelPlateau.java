@@ -54,6 +54,9 @@ public class PanelPlateau extends JPanel
 
 		g2.drawImage(fond, 0, 0, lPanel, hPanel, this);
 
+		g2.setFont(new Font("Serif", Font.BOLD, 24));
+		g2.setColor(Color.WHITE);
+		g2.drawString("Tour de " + this.ctrl.getJoueurActif(), getWidth()/50, getHeight()/15); 
 		this.ctrl.dessinerVillesEtRoutes(g, g2);
     }
 
@@ -96,9 +99,7 @@ public class PanelPlateau extends JPanel
 			}
 		}
 
-		g2.setFont(new Font("Serif", Font.BOLD, 24));
-		g2.setColor(Color.WHITE);
-		g2.drawString("Tour du joueur " + this.ctrl.getJoueurActif(), getWidth()/50, getHeight()/15); 
+		
 	}
 
 	public void dessinerRoute(Graphics g, int epaisseur, int departx, int departy, int arriveex, int arriveey, int nbTroncons, int numeroJoueur) 

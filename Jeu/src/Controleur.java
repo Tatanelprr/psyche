@@ -1,19 +1,7 @@
 package Jeu;
 
-import Jeu.ihm.FramePlateau;
-import Jeu.ihm.FramePlateauJ;
-import Jeu.ihm.PanelPlateau;
-import Jeu.ihm.PanelPlateauJ;
-import Jeu.metier.IRessource;
-import Jeu.metier.Jeton;
-import Jeu.metier.JetonRessource;
-import Jeu.metier.Joueur;
-import Jeu.metier.Pioche;
-import Jeu.metier.Plateau;
-import Jeu.metier.PlateauJ;
-import Jeu.metier.Route;
-import Jeu.metier.Ville;
-import Jeu.metier.ZoneCliquable;
+import Jeu.ihm.*;
+import Jeu.metier.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,24 +11,29 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class Controleur {
+public class Controleur
+{
 	// metier
 
 	private int hauteurPlateau;
 	private int largeurPlateau;
-	private int etape;
+	private int etape = 0;
+	private int tour;
+	private String nomJoueur1, nomJoueur2;
+	private String scenario;
 
-	private Joueur joueur1 = new Joueur("Charles");
-	private Joueur joueur2 = new Joueur("Solène");
-	private Joueur nvlRome = new Joueur("Romain");
+	private Joueur joueur1 = new Joueur("Charles", 1);
+	private Joueur joueur2 = new Joueur("Solène", 2);
+	private Joueur nvlRome = new Joueur("Romain", 3);
 	private Joueur joueurActif;
 	private Plateau plateau;
 	private PlateauJ plateauJoueur1;
 	private PlateauJ plateauJoueur2;
 
 	private Ville ville1, ville2;
-	private Pioche pioche = new Pioche();
+	private Pioche pioche;
 	private static List<Ville> villes = new ArrayList<>();
 	private static List<Route> routes = new ArrayList<>();
 	private List<ZoneCliquable> zonesCliquables = new ArrayList<>();
@@ -51,6 +44,7 @@ public class Controleur {
 
 	private FramePlateau framePlateau;
 	private PanelPlateau panelPlateau;
+	private FrameConnexion frameConnexion;
 
 	private FramePlateauJ framePlateauJ1;
 	private FramePlateauJ framePlateauJ2;
@@ -59,33 +53,65 @@ public class Controleur {
 
 	private Dimension tailleEcran;
 
-	public Controleur(int etape)
+	public Controleur(String scenario)
 	{
-		this.etape = etape;
-		this.importerDonnees();
-
 		this.tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+        this.frameConnexion = new FrameConnexion(this, this.tailleEcran);
+        this.scenario = scenario;
+	}
 
-		// ihm
-		this.panelPlateau = new PanelPlateau(this, this.tailleEcran);
-		this.framePlateau = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
+	public void demarrerJeu()
+    {
+        this.importerDonnees();
 
-		this.panelPlateauJ1 = new PanelPlateauJ(this, this.tailleEcran, this.joueur1.getNumero());
-		this.panelPlateauJ2 = new PanelPlateauJ(this, this.tailleEcran, this.joueur2.getNumero());
-		this.framePlateauJ1 = new FramePlateauJ(this, this.joueur1.getNumero(), this.tailleEcran, this.panelPlateauJ1);
-		this.framePlateauJ2 = new FramePlateauJ(this, this.joueur2.getNumero(), this.tailleEcran, this.panelPlateauJ2);
+        this.panelPlateau = new PanelPlateau(this, this.tailleEcran);
+        this.framePlateau = new FramePlateau(this, this.tailleEcran, this.panelPlateau);
 
-		// metier
+        this.panelPlateauJ1 = new PanelPlateauJ(this, this.tailleEcran, this.joueur1.getNumero());
+        this.panelPlateauJ2 = new PanelPlateauJ(this, this.tailleEcran, this.joueur2.getNumero());
+        this.framePlateauJ1 = new FramePlateauJ(this, this.joueur1.getNumero(), this.tailleEcran, this.panelPlateauJ1);
+        this.framePlateauJ2 = new FramePlateauJ(this, this.joueur2.getNumero(), this.tailleEcran, this.panelPlateauJ2);
+
+        this.plateau = new Plateau(this.joueur1, this.joueur2);
+        this.plateauJoueur1 = new PlateauJ(this.joueur1);
+        this.plateauJoueur2 = new PlateauJ(this.joueur2);
+        this.pioche = new Pioche();
+        this.remplirPlateau(this.plateau);
+        this.jouer();
+    }
+
+	public void jouerPrecedent()
+	{
+		this.joueur1 = new Joueur(this.nomJoueur1, 1);
+		this.joueur2 = new Joueur(this.nomJoueur2, 2);
 		this.plateau = new Plateau(this.joueur1, this.joueur2);
-		this.plateauJoueur1 = new PlateauJ(joueur1);
-		this.plateauJoueur2 = new PlateauJ(joueur2);
-
+		this.plateauJoueur1.viderPlateauJ();
+		this.plateauJoueur2.viderPlateauJ();
+		this.panelPlateauJ1.repaint();
+		this.panelPlateauJ2.repaint();
+		this.vider();
+		this.pioche = new Pioche();
 		this.remplirPlateau(this.plateau);
+		this.jouer();
+	}
 
+	public void vider()
+	{
+		for (Ville ville : this.villes)
+		{
+			ville.setJoueur(null);
+		}
+		for (Route route : this.routes)
+		{
+			route.possession(null);
+		}
+	}
+
+	public void jouer()
+	{
 		Ville.trouverVilleParNum(0).possession(this.nvlRome);
 		this.importerEtapes();
 		this.panelPlateau.repaint();
-		this.changeJoueur();
 	}
 
 	public void setDimension(int hauteur, int largeur)
@@ -94,13 +120,13 @@ public class Controleur {
 		this.largeurPlateau = largeur;
 	}
 
-	public int getJoueurActif()
+	public String getJoueurActif()
     {
         if (this.joueurActif != null)
         {
-            return this.joueurActif.getNumero();
+            return this.joueurActif.getNom();
         }
-        return 1;
+        return this.joueur1.getNom();
     }
 
 	public int getNbPionJ(int numeroJoueur)
@@ -111,6 +137,11 @@ public class Controleur {
 		} else {
 			return this.joueur2.getNbJetPoss();
 		}
+	}
+	
+	public void viderPlateau(Plateau plateau)
+	{
+
 	}
 
 	public void remplirPlateau(Plateau plateau)
@@ -303,7 +334,7 @@ public class Controleur {
 	{
 		if (this.ville1.estAdjacente(this.ville2) && (this.ville1.getJoueur() != null ^ this.ville2.getJoueur() != null)
 				&& this.ville1 != this.ville2)
-				{
+		{
 			Route.getRouteAvecVilles(this.ville1, this.ville2).possession(this.joueurActif);
 			if (this.joueurActif == this.joueur1)
 			{
@@ -344,21 +375,39 @@ public class Controleur {
 		}
 	}
 
+	public void setNomJoueur(int numeroJoueur, String nomJoueur)
+	{
+		if(numeroJoueur == 1)
+		{
+			this.joueur1.setNom(nomJoueur);
+			this.nomJoueur1 = nomJoueur;
+		}	
+		else
+		{
+			this.joueur2.setNom(nomJoueur);
+			this.nomJoueur2 = nomJoueur;
+		}
+	}
+
 	public void changeJoueur()
 	{
 		if (this.joueurActif == this.joueur1)
 		{
 			this.joueurActif = this.joueur2;
-		} else {
+		}
+		else
+		{
 			this.joueurActif = this.joueur1;
 		}
 	}
 
-	private void importerDonnees()
+	public void importerDonnees()
 	{
 		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filtre = new FileNameExtensionFilter("Carte", "run");
 		fileChooser.setDialogTitle("Importer");
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/../carte/sauvegarde"));
+		fileChooser.setFileFilter(filtre);
 		int userSelection = fileChooser.showOpenDialog(this.framePlateau);
 
 		if (userSelection == JFileChooser.APPROVE_OPTION)
@@ -425,69 +474,100 @@ public class Controleur {
 		}
 	}
 
-	private void importerEtapes()
+	public int getEtape()
 	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Importer");
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + "/../carte/sauvegarde"));
-		int userSelection = fileChooser.showOpenDialog(this.framePlateau);
+		return this.etape;
+	}
 
-		if (userSelection == JFileChooser.APPROVE_OPTION)
+	public void setEtape(int etape)
+	{
+		if (etape < 0)
 		{
-			File selectedFile = fileChooser.getSelectedFile();
-			try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile)))
-			{
-				String line;
-				while ((line = reader.readLine()) != null)
-				{
-					if (line.startsWith("Etape"))
-					{
-						String[] etapeData = line.split(":");
-						if (etapeData.length >= 3)
-						{
-							int numEtape = Integer.parseInt(etapeData[1]);
-							if (numEtape < this.etape)
-							{
-								if ((numEtape % 2) == 0)
-								{
-									this.joueurActif = this.joueur1;
-								}
-								else
-								{
-									this.joueurActif = this.joueur2;
-								}
-								int villeDepNum = Integer.parseInt(etapeData[2]);
-								int villeArrNum = Integer.parseInt(etapeData[3]);
-								this.ville1 = Ville.trouverVilleParNum(villeDepNum);
-								this.ville2 = Ville.trouverVilleParNum(villeArrNum);
+			etape = 0;
+		}
 
-								if (this.ville1 != null && this.ville2 != null)
-								{
-									this.deplacement();
-								}
+		if (etape > 30)
+		{
+			etape = 30;
+		}
+
+		if (etape < this.etape)
+		{
+			this.etape = etape;
+			this.jouerPrecedent();
+		}
+		else
+		{
+			this.etape = etape;
+			this.jouer();
+		}
+	}
+
+	public void importerEtapes()
+	{
+		if (this.scenario  == "")
+		{
+			this.joueurActif = this.joueur1;
+			return;
+		}
+		try (BufferedReader reader = new BufferedReader(new FileReader("../carte/sauvegarde/scenario/" + this.scenario)))
+		{
+			String line;
+			while ((line = reader.readLine()) != null)
+			{
+				if (line.startsWith("Etape"))
+				{
+					String[] etapeData = line.split(":");
+					if (etapeData.length >= 3)
+					{
+						int numEtape = Integer.parseInt(etapeData[1]);
+						if (numEtape < this.etape)
+						{
+							if ((numEtape % 2) == 0)
+							{
+								this.joueurActif = this.joueur1;
+							}
+							else
+							{
+								this.joueurActif = this.joueur2;
+							}
+							int villeDepNum = Integer.parseInt(etapeData[2]);
+							int villeArrNum = Integer.parseInt(etapeData[3]);
+							this.ville1 = Ville.trouverVilleParNum(villeDepNum);
+							this.ville2 = Ville.trouverVilleParNum(villeArrNum);
+							if (this.ville1 != null && this.ville2 != null)
+							{
+								this.deplacement();
 							}
 						}
 					}
 				}
 			}
-			catch (IOException e)
-			{
-				JOptionPane.showMessageDialog(this.framePlateau, "Erreur lors de l'importation des données !", "Erreur",
-						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
-			catch (NumberFormatException e)
-			{
-				JOptionPane.showMessageDialog(this.framePlateau, "Erreur de format dans les données !", "Erreur",
-						JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-			}
 		}
+		catch (IOException e)
+		{
+			JOptionPane.showMessageDialog(this.framePlateau, "Erreur lors de l'importation des données !", "Erreur",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		catch (NumberFormatException e)
+		{
+			JOptionPane.showMessageDialog(this.framePlateau, "Erreur de format dans les données !", "Erreur",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void main(String[] args)
 	{
-		int etape = Integer.parseInt(args[0]);
-		new Controleur(etape);
+		if (args.length == 0)
+		{
+			new Controleur("");
+		}
+		else
+		{
+			new Controleur(args[0]);
+		}
 	}
 }

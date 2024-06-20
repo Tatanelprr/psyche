@@ -107,11 +107,11 @@ public class Route
 
     public void possession(Joueur joueur)
     {
-        if (this.joueur == null)
-        {
-            joueur.setNbJetPoss(this.getNbTroncons());
-            this.joueur = joueur;
-        }
+		if (joueur != null)
+		{
+			joueur.setNbJetPoss(this.getNbTroncons());
+		}
+        this.joueur = joueur;
     }
 
 	public static Route getRouteAvecVilles(Ville ville1, Ville ville2)

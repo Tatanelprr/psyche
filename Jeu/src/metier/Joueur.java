@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class Joueur {
 
-    private static int increment = 1;
     private int numero;
     private String nom;
-    private int nbJetPoss = 25;
+    private int nbJetPoss;
 
-    public Joueur(String nom)
+    public Joueur(String nom, int num)
 	{
-        this.numero = increment++;
+        this.numero = num;
         this.nom = nom;
+		this.nbJetPoss = 25;
     }
 
     public int getNumero()
@@ -34,6 +34,11 @@ public class Joueur {
     public void setNbJetPoss(int nb)
 	{
         this.nbJetPoss -= nb;
+    }
+
+    public void setNom(String nom)
+    {
+        this.nom = nom;
     }
 
 }
